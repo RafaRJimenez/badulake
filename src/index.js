@@ -3,12 +3,19 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { createAppAsyncStore } from './config/storeConfig';
+import { Provider } from 'react-redux';
+
+let AppAsyncStore = createAppAsyncStore();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <Provider store={AppAsyncStore}>
+    <App />
   <React.StrictMode>
     <App />
   </React.StrictMode>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
