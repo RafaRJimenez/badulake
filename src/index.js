@@ -11,7 +11,6 @@ let AppAsyncStore = createAppAsyncStore();
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={AppAsyncStore}>
-    <App />
   <React.StrictMode>
     <App />
   </React.StrictMode>
