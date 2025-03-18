@@ -6,16 +6,65 @@ import Register from './components/Register';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import Login2 from './components/Login2';
+import { BrowserRouter as Router, Route, Routes, Link, Navigate } from "react-router-dom";
+import HomePage from './components/HomePage';
+import NotFoundPage from './components/NotFoundPage';
+import AboutPage from './components/AboutPage';
+
+
 
 function App() {
   return (
     <div className="App">
-      <ToastContainer />
+     <ToastContainer />
+    <Router>
+    <aside className="w-full bg-gray-800 text-white p-4">
+            <nav className="flex justify-center space-x-8">
+              <Link 
+                to="/" 
+                className="text-lg font-semibold hover:text-blue-400 transition duration-300"
+              >
+                Home
+              </Link>
+              <Link 
+                to="/login" 
+                className="text-lg font-semibold hover:text-blue-400 transition duration-300"
+              >
+                Login
+              </Link>
+              <Link 
+                to="/register" 
+                className="text-lg font-semibold hover:text-blue-400 transition duration-300"
+              >
+                Register
+              </Link>
+              <Link 
+                to="/about" 
+                className="text-lg font-semibold hover:text-blue-400 transition duration-300"
+              >
+                About
+              </Link>
+              <Link 
+                to="/faqs" 
+                className="text-lg font-semibold hover:text-blue-400 transition duration-300"
+              >
+                FAQs
+              </Link>
+            </nav>
+          </aside>
+    <Routes>
        {/* <LoginFormContainer /> */}
       {/* <LoginForm></LoginForm> */}
       {/* <Login></Login> */}
-       <Register></Register>
-      <Login2></Login2>
+      <Route exact path="/" element={<HomePage />} />
+      {["/about", "/faqs"].map((path, index) => 
+        <Route path={path} Component={AboutPage} key={index} />
+        )}
+      <Route path="/login" element={<Login2 />} />
+      <Route path="*" element={<NotFoundPage />} />
+      <Route path="/register" element={<Register />} />
+      </Routes>
+      </Router>
     </div>
   );
 }
