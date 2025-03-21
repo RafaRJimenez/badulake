@@ -10,7 +10,7 @@ import { BrowserRouter as Router, Route, Routes, Link, Navigate } from "react-ro
 import HomePage from './components/HomePage';
 import NotFoundPage from './components/NotFoundPage';
 import AboutPage from './components/AboutPage';
-
+import MainPageContainer from './components/containers/MainPageContainer';
 
 
 function App() {
@@ -31,6 +31,12 @@ function App() {
                 className="text-lg font-semibold hover:text-blue-400 transition duration-300"
               >
                 Login
+              </Link>
+              <Link 
+                to="/login2" 
+                className="text-lg font-semibold hover:text-blue-400 transition duration-300"
+              >
+                Login2
               </Link>
               <Link 
                 to="/register" 
@@ -56,13 +62,14 @@ function App() {
        {/* <LoginFormContainer /> */}
       {/* <LoginForm></LoginForm> */}
       {/* <Login></Login> */}
-      <Route exact path="/" element={<HomePage />} />
+      <Route exact path="/" element={<MainPageContainer />} />
       {["/about", "/faqs"].map((path, index) => 
         <Route path={path} Component={AboutPage} key={index} />
         )}
       <Route path="/login" element={<Login2 />} />
       <Route path="*" element={<NotFoundPage />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/login2" element={<LoginFormContainer />} />
       </Routes>
       </Router>
     </div>

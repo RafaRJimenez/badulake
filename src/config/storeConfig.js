@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 import { rootReducer } from "../redux/reducers";
-import { watcherSaga } from "../redux/sagas";
+import { rootSaga } from "../redux/rootSaga";
 
 
 export const createAppAsyncStore = () => {
@@ -13,7 +13,7 @@ export const createAppAsyncStore = () => {
     });
 
     // We init the Watcher Saga
-    sagaMiddleware.run(watcherSaga);
+    sagaMiddleware.run(rootSaga);
     
     return store;
 }

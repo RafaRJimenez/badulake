@@ -1,6 +1,6 @@
 //Initial State for userState
 
-import { API_CALL_REQUEST, API_CALL_SUCCESS, API_CALL_FAILURE } from './actions';
+import { API_CALL_REQUEST_USER, API_CALL_SUCCESS_USER, API_CALL_FAILURE_USER } from './actions';
 
 const initialState = {
     fetching: false,
@@ -11,14 +11,14 @@ const initialState = {
 
 export const userReducer = (state = initialState, action) => {  
     switch (action.type) {
-        case API_CALL_REQUEST:
+        case API_CALL_REQUEST_USER:
             return {
                 ...state,
                 fetching: true,
                 error: null,
                 loged:false
             };
-        case API_CALL_SUCCESS:
+        case API_CALL_SUCCESS_USER:
             return {
                 ...state,
                 fetching: false,
@@ -26,7 +26,7 @@ export const userReducer = (state = initialState, action) => {
                 error: null,
                 loged: true,
             };
-        case API_CALL_FAILURE:
+        case API_CALL_FAILURE_USER:
             return {
                 ...state,
                 fetching: false,
