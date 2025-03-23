@@ -1,4 +1,4 @@
-import { API_CALL_REQUEST, API_CALL_SUCCESS, API_CALL_FAILURE } from './productActions';
+import { SET_PAGE, API_CALL_REQUEST, API_CALL_SUCCESS, API_CALL_FAILURE } from './productActions';
 
 
 const initialState = {
@@ -10,11 +10,17 @@ const initialState = {
     page: 1,
     total: 0,
     limit: 6,
+    pages: 0
 };
 
 
 export const productsReducer = (state = initialState, action) => {
     switch (action.type) {
+        case SET_PAGE:
+            return {
+                ...state,
+                page: action.payload,
+            };
         case API_CALL_REQUEST:
             return {
                 ...state,

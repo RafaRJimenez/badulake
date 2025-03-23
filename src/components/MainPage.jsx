@@ -1,10 +1,23 @@
 import React from 'react';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
-const MainPage = ({products, fetching, fetchProducts}) => {
+const MainPage = ({products, total, pages, fetching, page, setPage, fetchProducts}) => {
+
+  const loadProducts = async (page) => {
+    await fetchProducts(page);
+     setPage(page)
+  };
+
+useEffect(() => {
+  loadProducts(page); 
+}, []);
+
+
     return (
         <div>
             <h1>Main Page</h1>
-            <p onClick={fetchProducts}>get products</p>
+            <p onClick={() => fetchProducts(6)}>get products</p>
             <div className="bg-gray-100 font-sans min-h-screen">
          <div className="max-w-4xl mx-auto p-4">
         {/* Encabezado */}
@@ -152,13 +165,13 @@ const MainPage = ({products, fetching, fetchProducts}) => {
             </div>
           </div>
 
-          Cuadrícula de productos (columna derecha) 
+        <div>Total : {total} {pages} {page}</div>
            <div className="col-span-1 md:col-span-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {products && products.map((product) => (
                 <div key={product.id} className="relative">
                   <img
-                    src={product.images[0]}
+                    src={product.thumbnail}
                     alt={product.title}
                     className="w-full h-auto object-cover mb-2"
                   />
@@ -172,12 +185,20 @@ const MainPage = ({products, fetching, fetchProducts}) => {
 
         {/* Paginación */}
         <footer className="mt-8 flex justify-center items-center space-x-2">
-          <button className="text-gray-600">{'<'}</button>
-          <button className="text-gray-800 font-semibold">1</button>
-          <button className="text-gray-600">2</button>
-          <button className="text-gray-600">3</button>
-          <button className="text-gray-600">4</button>
-          <button className="text-gray-600">{'>'}</button>
+          <button onClick={() =>
+          { if (
+            page > 1
+          ) 
+          loadProducts(page -1)}}
+           className="text-gray-600">{'<'}</button>
+          {[...Array(pages)].map((_, index) => (
+            <button key={index} onClick={() => loadProducts(index +1)} className="text-gray-600">{index + 1}</button>
+          ))}
+          <button onClick={() =>
+          { if (
+            page < 17
+          ) 
+          loadProducts(page -1)}} className="text-gray-600">{'>'}</button>
         </footer>
       </div>
     </div>
