@@ -11,6 +11,7 @@ import HomePage from './components/HomePage';
 import NotFoundPage from './components/NotFoundPage';
 import AboutPage from './components/AboutPage';
 import MainPageContainer from './components/containers/MainPageContainer';
+import FirebaseAuthContainer from './components/containers/FirebaseAuthContainer';
 
 
 function App() {
@@ -66,7 +67,7 @@ function App() {
       {["/about", "/faqs"].map((path, index) => 
         <Route path={path} Component={AboutPage} key={index} />
         )}
-      <Route path="/login" element={<Login2 />} />
+      <Route path="/login" element={<FirebaseAuthContainer />} />
       <Route path="*" element={<NotFoundPage />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login2" element={<LoginFormContainer />} />

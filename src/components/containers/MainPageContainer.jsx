@@ -12,8 +12,10 @@ const mapStateToProps = (state) => {
         products: state.products.products.products,
         fetching: state.products.fetching,
         pages: selectPages(state),
-        page: state.products.page
+        page: state.products.page,
+        authFirebase: state.authFirebase
     }
+  
 }
 
 const mapDispatchToProps = (dispatch) => {

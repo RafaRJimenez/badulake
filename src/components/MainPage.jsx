@@ -2,12 +2,14 @@ import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-const MainPage = ({products, total, pages, fetching, page, setPage, fetchProducts}) => {
+const MainPage = ({products, total, pages, fetching, page, setPage, fetchProducts, authFirebase}) => {
 
   const loadProducts = async (page) => {
     await fetchProducts(page);
      setPage(page)
   };
+
+  console.log(authFirebase)
 
 useEffect(() => {
   loadProducts(page); 
@@ -16,9 +18,10 @@ useEffect(() => {
 
     return (
         <div>
+     <div>{authFirebase?.user?.email || 'No user logged in'}</div>
             <h1>Main Page</h1>
             <p onClick={() => fetchProducts(6)}>get products</p>
-            <div className="bg-gray-100 font-sans min-h-screen">
+            <div className="bg-gray-100 font-sans">
          <div className="max-w-4xl mx-auto p-4">
         {/* Encabezado */}
         <header className="flex justify-between items-center mb-6">

@@ -1,30 +1,18 @@
 
 import React, {useState} from 'react';
-import { getAuth,  signInWithEmailAndPassword } from 'firebase/auth';
 import { toast } from 'react-toastify';
 
-const Login = () => {
+const Login = ({onLogin}) => {
     const [email, setEmail] = useState('');
       const [password, setPassword] = useState('');
     const signInWithEmail = (e) => {
         e.preventDefault();
-        const auth = getAuth();
-        signInWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user.email;
-            // ...
-            console.log(user);
-            toast.success('Usuario logeado con éxito');
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorCode, errorMessage);
-          });
-    };
+        onLogin(email, password);
+    }
     return (
+      
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+      <div>FIREBASE & REDUX</div>
       <div className="bg-white text-gray-800 rounded-lg shadow-lg p-8 w-full max-w-md">
           <h1 className="text-2xl font-bold mb-6 text-center">Iniciar Sesión</h1>
           <form onSubmit={signInWithEmail} className="space-y-4">
@@ -63,14 +51,6 @@ const Login = () => {
           </form>
       </div>
   </div>
-        // <div>
-        //     <h1>Login</h1>
-        //     <form onSubmit={signInWithEmail}>
-        //     <input type="email" value={email} placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-        //         <input type="password" value={password} placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-        //         <button type="submit">Login</button>
-        //     </form>
-        // </div>
     );
 }
 
