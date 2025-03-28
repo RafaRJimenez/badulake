@@ -12,6 +12,7 @@ import NotFoundPage from './components/NotFoundPage';
 import AboutPage from './components/AboutPage';
 import MainPageContainer from './components/containers/MainPageContainer';
 import FirebaseAuthContainer from './components/containers/FirebaseAuthContainer';
+import LogOutFirebaseContainer from './components/containers/LogOutFirebaseContainer';
 
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
               </Link>
             </nav>
           </aside>
+          <LogOutFirebaseContainer />
     <Routes>
        {/* <LoginFormContainer /> */}
       {/* <LoginForm></LoginForm> */}

@@ -1,5 +1,6 @@
 // Reducer (en reducers/authReducer.js)
 import { SIGN_IN_REQUEST, SIGN_IN_SUCCESS, SIGN_IN_FAILURE } from './firebaseActions';
+import { LOG_OUT_REQUEST, LOG_OUT_SUCCESS, LOG_OUT_FAILURE } from './firebaseActions';
 
 const initialState = {
     user: null,
@@ -26,6 +27,12 @@ const initialState = {
             message: action.payload.errorMessage
           }
         };
+      case LOG_OUT_REQUEST:
+        return { ...state, loading: true };
+      case LOG_OUT_SUCCESS:
+        return { ...state, loading: false, user: null };
+      case LOG_OUT_FAILURE:
+        return { ...state, loading: false, error: action.payload.error };
       default:
         return state;
     }

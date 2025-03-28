@@ -1,12 +1,13 @@
 import { all } from 'redux-saga/effects';
 import { watcherProductsSaga } from './productSagas';
 import { watcherSaga } from './sagas';
-import { watchSignIn } from './firebaseSagas';
+import { watchSignIn, watchSignOut } from './firebaseSagas';
 
 export function* rootSaga() {
     yield all([
         watcherProductsSaga(),
         watcherSaga(),
-        watchSignIn()
+        watchSignIn(),
+        watchSignOut()
     ]);
 }
