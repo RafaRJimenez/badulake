@@ -13,6 +13,7 @@ import AboutPage from './components/AboutPage';
 import MainPageContainer from './components/containers/MainPageContainer';
 import FirebaseAuthContainer from './components/containers/FirebaseAuthContainer';
 import LogOutFirebaseContainer from './components/containers/LogOutFirebaseContainer';
+import  Basket  from './components/Basket';
 
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
             </nav>
           </aside>
           <LogOutFirebaseContainer />
+          <Basket />
     <Routes>
        {/* <LoginFormContainer /> */}
       {/* <LoginForm></LoginForm> */}
