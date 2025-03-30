@@ -180,6 +180,7 @@ useEffect(() => {
                   />
                   <h3 className="text-sm font-semibold text-gray-800">{product.title}</h3>
                   <p className="text-sm text-gray-600">{product.price}€</p>
+                  <button className='border-4'>ADD TO CART</button>
                 </div>
             ))}
             </div>

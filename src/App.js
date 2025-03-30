@@ -14,6 +14,7 @@ import MainPageContainer from './components/containers/MainPageContainer';
 import FirebaseAuthContainer from './components/containers/FirebaseAuthContainer';
 import LogOutFirebaseContainer from './components/containers/LogOutFirebaseContainer';
 import  Basket  from './components/Basket';
+import BasketContainer from './components/containers/BasketContainer';
 
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
               </Link>
             </nav>
           </aside>
+          <BasketContainer />
           <LogOutFirebaseContainer />
           <Basket />
     <Routes>
