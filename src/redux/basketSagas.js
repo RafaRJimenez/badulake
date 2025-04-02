@@ -8,7 +8,7 @@ import { db } from '../firebase/index.js'; // Asegúrate de importar tu configur
 function* addBasketSaga(action) {
     try {
         const basket = action.payload;
-        const docRef = yield call([collection(db, 'basket'), addDoc], basket);
+        const docRef = yield call(addDoc, collection(db, 'basket'), basket);
         yield put({ type: ADD_BASKET_SUCCESS, payload: { id: docRef.id, ...basket } });
         toast.success('Producto añadido al carrito con éxito');
     } catch (error) {

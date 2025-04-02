@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { fetchProducts,setPage } from '../../redux/productActions'  
 import MainPage from '../MainPage'
 import { selectPages } from '../../redux/selectors/pages.js'
+import { addBasket } from '../../redux/basketActions.js'
 
 const mapStateToProps = (state) => {
     console.log(state);
@@ -25,6 +26,13 @@ const mapDispatchToProps = (dispatch) => {
         },
         setPage: (page) => {
             dispatch(setPage(page)); // Despacha la acción para actualizar `page`
+          },
+          addNewProduct: (product) => {
+            console.log(product)
+            console.log("product", product)
+            console.log({product})
+            console.log("product", product)
+            dispatch(addBasket(product)); // Despacha la acción para agregar el producto al carrito
           },
     }
 }
