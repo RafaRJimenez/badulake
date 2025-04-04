@@ -22,6 +22,7 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const mapStateToProps = (state) => {
+    console.log('Basket changed:',state.basket.basket);
     return {
         basket: state.basket.basket,
         fetching: state.basket.fetching
