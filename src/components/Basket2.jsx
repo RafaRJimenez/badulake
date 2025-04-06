@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IoIosClose } from "react-icons/io";
 
-const Basket2 = ({ callGetBasket, basket }) => {
+const Basket2 = ({ callGetBasket, basket, callDeleteBasket }) => {
   const [isOpen, setIsOpen] = useState(false); // Estado para controlar si el desplegable está abierto
 
   const getNewBasket = async () => {
@@ -27,13 +27,15 @@ const Basket2 = ({ callGetBasket, basket }) => {
 
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="fixed top-44 right-10">
       <div
         className={`transition-transform duration-300 ease-in-out transform ${
           isOpen ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
         } bg-white shadow-lg rounded-lg p-4 w-80`}
       >
-      <div><IoIosClose /></div>
+        <div className='fixed right-1 top-1'>
+          <IoIosClose size={32} className="text-gray-800 hover:text-red-500 transition duration-300" onClick={closeBasket} />
+        </div>
         <h2 className="text-lg font-bold text-gray-800 mb-4">Carrito</h2>
         {basket.length === 0 ? (
           <p className="text-gray-600">El carrito está vacío.</p>
@@ -41,10 +43,16 @@ const Basket2 = ({ callGetBasket, basket }) => {
           basket.map((item, index) => (
             <div
               key={index}
-              className="p-4 bg-gray-100 rounded-lg shadow-md mb-4"
-            >
-              <h2 className="text-md font-semibold text-gray-800">{item.name}</h2>
-              <p className="text-gray-600">${item.price}</p>
+              className="p-1"
+            >   <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-sm font-bold text-gray-800 relative text-left">{item.name}</h2>
+              <p className="text-gray-600 text-left">${item.price}</p>
+              <h4 className="text-sm font-semibold text-red-500 relative text-left cursor-pointer" onClick={() => callDeleteBasket(item.id)}>Eliminar producto</h4>
+            </div>
+              <img src={item.image} alt={item.name} className="w-16 h-16 object-cover mt-2" />
+              </div>
+              <hr></hr>
             </div>
           ))
         )}

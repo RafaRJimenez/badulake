@@ -180,7 +180,7 @@ useEffect(() => {
                   />
                   <h3 className="text-sm font-semibold text-gray-800">{product.title}</h3>
                   <p className="text-sm text-gray-600">{product.price}€</p>
-                  <button className='border-4' onClick={() => addNewProduct({ name: product.title, price: product.price })}>ADD TO CART</button>
+                  <button className='border-4' onClick={() => addNewProduct({ name: product.title, price: product.price, image: product.thumbnail })}>ADD TO CART</button>
                 </div>
             ))}
             </div>

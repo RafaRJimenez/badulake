@@ -30,8 +30,6 @@ const mapDispatchToProps = (dispatch) => {
           addNewProduct: (product) => {
             console.log(product)
             console.log("product", product)
-            console.log({product})
-            console.log("product", product)
             dispatch(addBasket(product)); // Despacha la acción para agregar el producto al carrito
           },
     }

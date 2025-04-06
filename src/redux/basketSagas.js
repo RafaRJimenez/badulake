@@ -43,7 +43,7 @@ function* editBasketSaga(action) {
 
 function* deleteBasketSaga(action) {
     try {
-        const { id } = action.payload;
+        const id  = action.payload;
         const docRef = doc(db, 'basket', id);
         yield call(deleteDoc, docRef);
         yield put({ type: DELETE_BASKET_SUCCESS, payload: id });
