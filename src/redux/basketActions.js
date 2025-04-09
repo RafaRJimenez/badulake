@@ -14,6 +14,15 @@ export const DELETE_BASKET = 'DELETE_BASKET';
 export const DELETE_BASKET_SUCCESS = 'DELETE_BASKET_SUCCESS';
 export const DELETE_BASKET_FAILURE = 'DELETE_BASKET_FAILURE';
 
+export const DELETE_FULL_BASKET = 'DELETE_FULL_BASKET';
+export const DELETE_FULL_BASKET_SUCCESS = 'DELETE_FULL_BASKET_SUCCESS';
+export const DELETE_FULL_BASKET_FAILURE = 'DELETE_FULL_BASKET_FAILURE';
+
+export const DELETE_WHOLE_PRODUCT = 'DELETE_WHOLE_PRODUCT';
+export const DELETE_WHOLE_PRODUCT_SUCCESS = 'DELETE_WHOLE_PRODUCT_SUCCESS';
+export const DELETE_WHOLE_PRODUCT_FAILURE = 'DELETE_WHOLE_PRODUCT_FAILURE';
+
+
 export const addBasket = (product) => ({
   type: ADD_BASKET,
   payload: product
@@ -32,3 +41,16 @@ export const deleteBasket = (productId) => ({
 export const getBasket = () => ({
   type: GET_BASKET
 });
+
+
+export const deleteFullBasket = () => ({
+  type: DELETE_FULL_BASKET,
+  payload: null
+});
+
+
+export const deleteWholeProduct = (productId) => ({
+  type: DELETE_WHOLE_PRODUCT,
+  payload: productId
+});
+

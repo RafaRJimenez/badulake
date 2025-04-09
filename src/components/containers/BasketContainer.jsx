@@ -1,8 +1,6 @@
 import {connect} from 'react-redux';
-import { addBasket, getBasket, editBasket, deleteBasket  } from '../../redux/basketActions';
-
+import { addBasket, getBasket, editBasket, deleteBasket, deleteFullBasket } from '../../redux/basketActions';
 import Basket2 from '../Basket2';
-
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -17,6 +15,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         callGetBasket: () => {
             dispatch(getBasket())
+        },
+        callDeleteFullBasket: () => {
+            dispatch(deleteFullBasket())
         }
     }
 }

@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { IoIosClose } from "react-icons/io";
+import { groupedBasket } from './services/BasketService';
+import { FiMinusCircle } from "react-icons/fi";
+import { FiPlusCircle } from "react-icons/fi";
 
-const Basket2 = ({ callGetBasket, basket, callDeleteBasket }) => {
-  const [isOpen, setIsOpen] = useState(false); // Estado para controlar si el desplegable está abierto
 
-  const getNewBasket = async () => {
+const Basket2 = ({ callGetBasket, basket, callDeleteBasket, callDeleteFullBasket, callAddBasket  }) => {
+  const [isOpen, setIsOpen] = useState(false); 
+  
+ 
+    const getNewBasket = async () => {
     
     setIsOpen(true); // Abre el desplegable cuando se recibe un nuevo producto
     // setTimeout(() => setIsOpen(false), 3000); // Cierra automáticamente después de 3 segundos
@@ -40,7 +45,7 @@ const Basket2 = ({ callGetBasket, basket, callDeleteBasket }) => {
         {basket.length === 0 ? (
           <p className="text-gray-600">El carrito está vacío.</p>
         ) : (
-          basket.map((item, index) => (
+          groupedBasket(basket).map((item, index) => (
             <div
               key={index}
               className="p-1"
@@ -48,6 +53,11 @@ const Basket2 = ({ callGetBasket, basket, callDeleteBasket }) => {
             <div>
               <h2 className="text-sm font-bold text-gray-800 relative text-left">{item.name}</h2>
               <p className="text-gray-600 text-left">${item.price}</p>
+              <h4 className="text-sm font-semibold text-gray-800 relative text-left cursor-pointer">
+              <div className="flex items-center">Quantity: <h3 className='bold p-1' onClick={() => callDeleteBasket(item.id)}><FiMinusCircle />
+</h3> {item.quantity} <h3 className='bold p-1' onClick={() => callAddBasket({ name: item.name, price: item.price, image: item.image})}><FiPlusCircle />
+</h3></div>
+              </h4>
               <h4 className="text-sm font-semibold text-red-500 relative text-left cursor-pointer" onClick={() => callDeleteBasket(item.id)}>Eliminar producto</h4>
             </div>
               <img src={item.image} alt={item.name} className="w-16 h-16 object-cover mt-2" />
@@ -56,7 +66,10 @@ const Basket2 = ({ callGetBasket, basket, callDeleteBasket }) => {
             </div>
           ))
         )}
-      </div>
+        
+        <button className='border p-1 border-gray-600' onClick={callDeleteFullBasket}>CLEAR</button>
+        <button className='border p-1 border-gray-600' onClick={() => groupedBasket(basket)}>BASKET-SERVICE</button>
+      </div>  
     </div>
   );
 };
