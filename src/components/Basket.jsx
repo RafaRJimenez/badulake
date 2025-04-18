@@ -14,15 +14,15 @@ const Basket = ({ cartItems, onRemove }) => {
     };
 
     const createNewBasket = async () => {
-        console.log(newBasket);
+        // console.log(newBasket);
         await addBasket(newBasket);
         getNewBasket();
     }
 
     const getNewBasket = async () => {
         const data = await getBasket();
-        console.log(data);
-        console.log("la está trayendo")
+        // console.log(data);
+        // console.log("la está trayendo")
         setBasket(data);
     }
 

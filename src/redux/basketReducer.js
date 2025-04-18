@@ -1,7 +1,7 @@
 import { ADD_BASKET, ADD_BASKET_SUCCESS, 
     ADD_BASKET_FAILURE, GET_BASKET, GET_BASKET_SUCCESS, GET_BASKET_FAILURE, EDIT_BASKET, EDIT_BASKET_SUCCESS,
      EDIT_BASKET_FAILURE, DELETE_BASKET, DELETE_BASKET_SUCCESS, DELETE_BASKET_FAILURE,
-    DELETE_FULL_BASKET, DELETE_FULL_BASKET_SUCCESS, DELETE_FULL_BASKET_FAILURE, ADD_QUANTITY_BASKET, ADD_QUANTITY_BASKET_SUCCESS, ADD_QUANTITY_BASKET_FAILURE } from "./basketActions";
+    DELETE_FULL_BASKET, DELETE_FULL_BASKET_SUCCESS, DELETE_FULL_BASKET_FAILURE, DELETE_WHOLE_PRODUCT, DELETE_WHOLE_PRODUCT_SUCCESS, DELETE_WHOLE_PRODUCT_FAILURE } from "./basketActions";
 
 
 
@@ -44,6 +44,13 @@ export const basketReducer = (state = initialState, action) => {
         case DELETE_FULL_BASKET_SUCCESS:
             return { ...state, loading: false, basket: [] };
         case DELETE_FULL_BASKET_FAILURE:
+            return { ...state, loading: false, error: action.payload };
+        case DELETE_WHOLE_PRODUCT:
+            return { ...state, loading: true, error: null };
+            case DELETE_WHOLE_PRODUCT_SUCCESS:
+                const updatedBasketAfterDelete = state.basket.filter(item => !action.payload.includes(item.id));
+                return { ...state, loading: false, basket: updatedBasketAfterDelete };
+        case DELETE_WHOLE_PRODUCT_FAILURE:
             return { ...state, loading: false, error: action.payload };
         default:
             return state;

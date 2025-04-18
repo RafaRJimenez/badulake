@@ -5,9 +5,10 @@ import { FiMinusCircle } from "react-icons/fi";
 import { FiPlusCircle } from "react-icons/fi";
 
 
-const Basket2 = ({ callGetBasket, basket, callDeleteBasket, callDeleteFullBasket, callAddBasket  }) => {
+const Basket2 = ({ callGetBasket, basket, callDeleteBasket, callDeleteFullBasket, callAddBasket, callDeleteWholeProduct  }) => {
   const [isOpen, setIsOpen] = useState(false); 
-  
+  const [newBasket, setNewBasket] = useState([]); // Estado para almacenar el nuevo carrito
+
  
     const getNewBasket = async () => {
     
@@ -19,16 +20,33 @@ const Basket2 = ({ callGetBasket, basket, callDeleteBasket, callDeleteFullBasket
     setIsOpen(false); // Cierra el desplegable
   }
 
+  // const callDeleteWholeProduct = async (item) => {
+  //   console.log('Antes de eliminar:', basket);
+  //   await callDeleteBasket(item.id);
+  //   await Promise.all(item.ids.map((id) => callDeleteBasket(id)));
+  //   console.log('Después de eliminar:', basket);
+  // }
+
   useEffect(() => {
     callGetBasket();
     
   }, []); // Ejecuta cada vez que `basket` cambia
 
 
-  useEffect(() => {
-    getNewBasket();
-  }
-, [basket]); // Ejecuta cada vez que `basket` cambia
+//   useEffect(() => {
+//     getNewBasket();
+//   }
+// , [basket]); // Ejecuta cada vez que `basket` cambia
+
+useEffect(() => { 
+  const mainTask = async () => {
+    await getNewBasket(); // Llama a la función para obtener el carrito
+  const grouped = groupedBasket(basket); 
+  setNewBasket(grouped);
+  console.log("this is new basket", newBasket) }
+  console.log("this is basket", basket)
+  mainTask(); // Llama a la función principal
+}, [basket]);
 
 
   return (
@@ -45,7 +63,7 @@ const Basket2 = ({ callGetBasket, basket, callDeleteBasket, callDeleteFullBasket
         {basket.length === 0 ? (
           <p className="text-gray-600">El carrito está vacío.</p>
         ) : (
-          groupedBasket(basket).map((item, index) => (
+          newBasket.map((item, index) => (
             <div
               key={index}
               className="p-1"
@@ -58,7 +76,7 @@ const Basket2 = ({ callGetBasket, basket, callDeleteBasket, callDeleteFullBasket
 </h3> {item.quantity} <h3 className='bold p-1' onClick={() => callAddBasket({ name: item.name, price: item.price, image: item.image})}><FiPlusCircle />
 </h3></div>
               </h4>
-              <h4 className="text-sm font-semibold text-red-500 relative text-left cursor-pointer" onClick={() => callDeleteBasket(item.id)}>Eliminar producto</h4>
+              <h4 className="text-sm font-semibold text-red-500 relative text-left cursor-pointer" onClick={() => callDeleteWholeProduct(item.ids)}>Eliminar producto</h4>
             </div>
               <img src={item.image} alt={item.name} className="w-16 h-16 object-cover mt-2" />
               </div>

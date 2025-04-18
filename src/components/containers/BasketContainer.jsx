@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import { addBasket, getBasket, editBasket, deleteBasket, deleteFullBasket } from '../../redux/basketActions';
+import { addBasket, getBasket, editBasket, deleteBasket, deleteFullBasket, deleteWholeProduct } from '../../redux/basketActions';
 import Basket2 from '../Basket2';
 
 const mapDispatchToProps = (dispatch) => {
@@ -18,12 +18,15 @@ const mapDispatchToProps = (dispatch) => {
         },
         callDeleteFullBasket: () => {
             dispatch(deleteFullBasket())
-        }
+        },
+        callDeleteWholeProduct: (productId) => {
+            dispatch(deleteWholeProduct(productId))
+        },
     }
 }
 
 const mapStateToProps = (state) => {
-    console.log('Basket changed:',state.basket.basket);
+    // console.log('Basket changed:',state.basket.basket);
     return {
         basket: state.basket.basket,
         fetching: state.basket.fetching

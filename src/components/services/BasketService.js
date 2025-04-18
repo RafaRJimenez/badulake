@@ -6,8 +6,7 @@
     } else {
       acc.push({ ...item, quantity: 1, ids: [item.id] }); // Nuevo elemento con cantidad 1
     }
-     console.log(acc);
-     console.log("hola etoy pasando aquí")
+    console.log("acc", acc)
     return acc;
   }, []);
 

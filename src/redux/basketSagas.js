@@ -1,6 +1,8 @@
 import { put, call, all, takeLatest } from 'redux-saga/effects';
 import { toast } from 'react-toastify'; // Asumiendo que usas react-toastify
-import { ADD_BASKET, ADD_BASKET_SUCCESS, ADD_BASKET_FAILURE, GET_BASKET, GET_BASKET_SUCCESS, GET_BASKET_FAILURE, EDIT_BASKET, EDIT_BASKET_SUCCESS, EDIT_BASKET_FAILURE, DELETE_BASKET, DELETE_BASKET_SUCCESS, DELETE_BASKET_FAILURE, DELETE_FULL_BASKET, DELETE_FULL_BASKET_SUCCESS, DELETE_FULL_BASKET_FAILURE } from './basketActions';
+import { ADD_BASKET, ADD_BASKET_SUCCESS, ADD_BASKET_FAILURE, GET_BASKET, GET_BASKET_SUCCESS, GET_BASKET_FAILURE, EDIT_BASKET, EDIT_BASKET_SUCCESS, 
+    EDIT_BASKET_FAILURE, DELETE_BASKET, DELETE_BASKET_SUCCESS, DELETE_BASKET_FAILURE, DELETE_FULL_BASKET,
+     DELETE_FULL_BASKET_SUCCESS, DELETE_FULL_BASKET_FAILURE, DELETE_WHOLE_PRODUCT, DELETE_WHOLE_PRODUCT_SUCCESS, DELETE_WHOLE_PRODUCT_FAILURE } from './basketActions';
 import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore'; // Asegúrate de importar Firestore
 import { db } from '../firebase/index.js'; // Asegúrate de importar tu configuración de Firebase
 
@@ -68,6 +70,50 @@ function* deleteFullBasketSaga() {
     }
 }
 
+function* deleteWholeProductSaga(action) {
+    try {
+      const ids = action.payload;
+      
+      // Validar que ids es un array y no está vacío
+      if (!Array.isArray(ids) || ids.length === 0) {
+        throw new Error("Se esperaba un array de IDs no vacío");
+      }
+  
+      // Validar que todos los elementos del array son strings válidos
+      if (!ids.every(id => typeof id === "string" && id)) {
+        throw new Error("Todos los IDs deben ser strings válidos");
+      }
+  
+      // Obtener todos los documentos de la colección 'basket'
+      const querySnapshot = yield call(getDocs, collection(db, 'basket'));
+  
+      // Filtrar documentos cuyos IDs estén en el array de ids
+      const docsToDelete = querySnapshot.docs.filter(doc => ids.includes(doc.id));
+  
+      // Si no se encuentran documentos para eliminar
+      if (docsToDelete.length === 0) {
+        throw new Error("Ningún producto encontrado en el carrito para los IDs proporcionados");
+      }
+  
+      // Crear promesas de eliminación para los documentos filtrados
+      const deletePromises = docsToDelete.map(doc => call(deleteDoc, doc.ref));
+  
+      // Ejecutar todas las eliminaciones en paralelo
+      yield all(deletePromises);
+  
+      // Despachar acción de éxito
+      yield put({ type: DELETE_WHOLE_PRODUCT_SUCCESS, payload: ids });
+  
+      // Mostrar notificación de éxito
+      toast.success(`${docsToDelete.length} producto(s) eliminado(s) del carrito con éxito`);
+    } catch (error) {
+      // Despachar acción de fallo con el mensaje de error
+      yield put({ type: DELETE_WHOLE_PRODUCT_FAILURE, payload: error.message });
+  
+      // Mostrar notificación de error
+      toast.error(`Error al eliminar productos: ${error.message}`);
+    }
+  }
 
 export function* watchBasketSagas() {
     yield takeLatest(ADD_BASKET, addBasketSaga);
@@ -75,6 +121,7 @@ export function* watchBasketSagas() {
     yield takeLatest(EDIT_BASKET, editBasketSaga);
     yield takeLatest(DELETE_BASKET, deleteBasketSaga);
     yield takeLatest(DELETE_FULL_BASKET, deleteFullBasketSaga);
+    yield takeLatest(DELETE_WHOLE_PRODUCT, deleteWholeProductSaga);
 }
 
 

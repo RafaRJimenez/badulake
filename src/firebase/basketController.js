@@ -5,7 +5,7 @@ import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc } from 'firebase
 export const addBasket = async (basket) => {
     try {
         const docRef = await addDoc(collection(db, 'basket'), basket);
-        console.log('Document written with ID: ', docRef.id);
+        // console.log('Document written with ID: ', docRef.id);
     } catch (e) {
         console.error('Error adding document: ', e);
     }
@@ -15,8 +15,8 @@ export const getBasket = async () => {
     try {
         const querySnapshot = await getDocs(collection(db, 'basket'));
         querySnapshot.forEach((doc) => {
-            console.log(`${doc.id} => ${doc.data()}`);
-            console.log("hellooooooooo")
+            // console.log(`${doc.id} => ${doc.data()}`);
+            // console.log("hellooooooooo")
         });
         return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     } catch (e) {
@@ -28,7 +28,7 @@ export const editBasket = async (id, basket) => {
     try {
         const docRef = doc(db, 'basket', id);
         await updateDoc(docRef, basket);
-        console.log('Document updated with ID: ', id);
+        // console.log('Document updated with ID: ', id);
     } catch (e) {
         console.error('Error updating document: ', e);
     }
