@@ -1,9 +1,12 @@
-import { SET_PAGE, API_CALL_REQUEST, API_CALL_SUCCESS, API_CALL_FAILURE } from './productActions';
+import { SET_PAGE, API_CALL_REQUEST, API_CALL_SUCCESS, API_CALL_FAILURE, API_CALL_REQUEST_CATEGORIES, 
+    API_CALL_SUCCESS_CATEGORIES, API_CALL_FAILURE_CATEGORIES  } from './productActions';
+
 
 
 const initialState = {
     fetching: false,
     products: [],
+    categories: [],
     error: null,
     filters: {},
     sort: {},
@@ -35,6 +38,25 @@ export const productsReducer = (state = initialState, action) => {
                 error: null,
             };
         case API_CALL_FAILURE:
+            return {
+                ...state,
+                fetching: false,
+                error: action.payload.error,
+            };
+        case API_CALL_REQUEST_CATEGORIES:
+            return {
+                ...state,
+                fetching: true,
+                error: null,
+            };
+        case API_CALL_SUCCESS_CATEGORIES:
+            return {
+                ...state,
+                fetching: false,
+                categories: action.payload,
+                error: null,
+            };
+        case API_CALL_FAILURE_CATEGORIES:
             return {
                 ...state,
                 fetching: false,

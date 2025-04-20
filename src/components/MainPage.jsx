@@ -2,24 +2,34 @@ import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-const MainPage = ({products, total, pages, fetching, page, setPage, fetchProducts, authFirebase, addNewProduct}) => {
+const MainPage = ({products, total, pages, fetching, categories, httpRequest, page, setPage, fetchProducts, authFirebase, addNewProduct}) => {
 
   const loadProducts = async (page) => {
     await fetchProducts(page);
      setPage(page)
   };
 
+  const getCategories = async (type, url) => {
+  await httpRequest(type, url)
+  }
+
   console.log(authFirebase)
+
+  console.log("thouse are products" , products)
+
 
 useEffect(() => {
   loadProducts(page); 
 }, []);
 
 
+
+
     return (
         <div>
      <div>{authFirebase?.user?.email || 'No user logged in'}</div>
             <h1>Main Page</h1>
+            <h2 onClick={() => getCategories("get", 'https://dummyjson.com/products/categories')}> VAMOS A CARGAR CATEGORÍASSS</h2>
             <p onClick={() => fetchProducts(6)}>get products</p>
             <div className="bg-gray-100 font-sans">
          <div className="max-w-4xl mx-auto p-4">
@@ -137,36 +147,16 @@ useEffect(() => {
           <div className="col-span-1">
             <h2 className="text-md font-semibold text-gray-800 mb-4">Category</h2>
             <div className="space-y-2">
-              <label className="flex items-center">
-                <input type="checkbox" className="mr-2" defaultChecked />
-                <span className="text-gray-600">People</span>
+            {categories && categories.map((category) => (
+              <label key={category.id} className="flex items-center">
+              <input type="checkbox" className="mr-2" defaultChecked />
+              <span className="text-gray-600">{category.name}</span>
               </label>
-              <label className="flex items-center">
-                <input type="checkbox" className="mr-2" defaultChecked />
-                <span className="text-gray-600">Premium</span>
-              </label>
-              <label className="flex items-center">
-                <input type="checkbox" className="mr-2" defaultChecked />
-                <span className="text-gray-600">Pets</span>
-              </label>
-              <label className="flex items-center">
-                <input type="checkbox" className="mr-2" defaultChecked />
-                <span className="text-gray-600">Food</span>
-              </label>
-              <label className="flex items-center">
-                <input type="checkbox" className="mr-2" defaultChecked />
-                <span className="text-gray-600">Landmarks</span>
-              </label>
-              <label className="flex items-center">
-                <input type="checkbox" className="mr-2" />
-                <span className="text-gray-600">Cities</span>
-              </label>
-              <label className="flex items-center">
-                <input type="checkbox" className="mr-2" />
-                <span className="text-gray-600">Nature</span>
-              </label>
+            ))}
             </div>
           </div>
+
+     
 
         <div>Total : {total} {pages} {page}</div>
            <div className="col-span-1 md:col-span-3">
@@ -186,6 +176,7 @@ useEffect(() => {
             </div>
           </div>
         </div>
+   
 
         {/* Paginación */}
         <footer className="mt-8 flex justify-center items-center space-x-2">
@@ -206,7 +197,7 @@ useEffect(() => {
         </footer>
       </div>
     </div>
-        </div>
+    </div>
     );
 }
 

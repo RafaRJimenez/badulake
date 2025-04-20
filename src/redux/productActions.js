@@ -1,6 +1,10 @@
 export const API_CALL_REQUEST = 'API_CALL_REQUEST'; // Watcher Saga Listens
 export const API_CALL_SUCCESS = 'API_CALL_SUCCESS'; // Worker Saga Dispatches
 export const API_CALL_FAILURE = 'API_CALL_FAILURE';
+export const API_CALL_REQUEST_CATEGORIES = 'API_CALL_REQUEST_CATEGORIES'; // Watcher Saga Listens
+export const API_CALL_SUCCESS_CATEGORIES = 'API_CALL_SUCCESS_CATEGORIES'; // Worker Saga Dispatches
+export const API_CALL_FAILURE_CATEGORIES = 'API_CALL_FAILURE_CATEGORIES'; // Worker Saga Dispatches
+
 export const SET_PAGE = 'SET_PAGE';
 
 
@@ -30,3 +34,34 @@ export const fetchProducts = (page = 1, filters = {}, sort = {}) => {
       },
     };
   };
+
+  export const httpRequest = (method, url) => {
+      return {
+          type: API_CALL_REQUEST_CATEGORIES,
+          payload: {
+              request: {
+                  method: method,
+                  url: url
+              },
+              okAction: API_CALL_SUCCESS_CATEGORIES,
+              failAction: API_CALL_FAILURE_CATEGORIES,
+          }
+      }
+  }
+
+
+  
+//   export const httpRequest = (method, url, data) => {
+//     return {
+//         type: API_CALL_REQUEST,
+//         payload: {
+//             request: {
+//                 method: method,
+//                 url: url,
+//                 data: data,
+//             },
+//             okAction: API_CALL_SUCCESS,
+//             failAction: API_CALL_FAILURE
+//         }
+//     }
+// }
