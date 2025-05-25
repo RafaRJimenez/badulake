@@ -1,6 +1,6 @@
 import { takeLatest, call, put} from 'redux-saga/effects';
 import axios from 'axios';
-import { API_CALL_REQUEST, API_CALL_REQUEST_CATEGORIES } from './productActions';
+import { API_CALL_REQUEST, API_CALL_REQUEST_CATEGORIES, API_CALL_REQUEST_BY_CATEGORY } from './productActions';
 
 
 
@@ -8,6 +8,7 @@ export function* watcherProductsSaga() {
     //listens the action and starts a worker saga
     yield takeLatest(API_CALL_REQUEST, workerSaga); 
     yield takeLatest(API_CALL_REQUEST_CATEGORIES, workerSaga);
+    yield takeLatest(API_CALL_REQUEST_BY_CATEGORY, workerSaga);
 }
 
 export function* workerSaga(action) {

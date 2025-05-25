@@ -1,5 +1,7 @@
 import { SET_PAGE, API_CALL_REQUEST, API_CALL_SUCCESS, API_CALL_FAILURE, API_CALL_REQUEST_CATEGORIES, 
-    API_CALL_SUCCESS_CATEGORIES, API_CALL_FAILURE_CATEGORIES  } from './productActions';
+    API_CALL_SUCCESS_CATEGORIES, API_CALL_FAILURE_CATEGORIES,
+    API_CALL_REQUEST_BY_CATEGORY, API_CALL_SUCCESS_BY_CATEGORY, API_CALL_FAILURE_BY_CATEGORY
+  } from './productActions';
 
 
 
@@ -57,6 +59,28 @@ export const productsReducer = (state = initialState, action) => {
                 error: null,
             };
         case API_CALL_FAILURE_CATEGORIES:
+            return {
+                ...state,
+                fetching: false,
+                error: action.payload.error,
+            };
+        case API_CALL_REQUEST_BY_CATEGORY:
+            return {
+                ...state,
+                fetching: true,
+                error: null,
+            };
+        case API_CALL_SUCCESS_BY_CATEGORY:
+            return {
+                ...state,
+                fetching: false,
+                products: action.payload, // Assuming the response has a 'products' field
+                total: action.payload.total, // Assuming the response has a 'total' field
+                limit: action.payload.limit, // Assuming the response has a 'limit' field
+                pages: Math.ceil(action.payload.total / action.payload.limit), // Calculate total pages
+                error: null,
+            };
+        case API_CALL_FAILURE_BY_CATEGORY:
             return {
                 ...state,
                 fetching: false,

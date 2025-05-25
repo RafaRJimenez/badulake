@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { connect } from 'react-redux'
-import { fetchProducts,setPage, httpRequest } from '../../redux/productActions'  
+import { fetchProducts,setPage, httpRequest, httpRequestCategories } from '../../redux/productActions'  
 import MainPage from '../MainPage'
 import { selectPages } from '../../redux/selectors/pages.js'
 import { addBasket } from '../../redux/basketActions.js'
@@ -29,6 +29,9 @@ const mapDispatchToProps = (dispatch) => {
         httpRequest: (method, url) => {
             dispatch(httpRequest(method, url)) // Despacha la acción httpRequest
         },
+        httpRequestCategories: (method, url) => {
+            dispatch(httpRequestCategories(method, url)) // Despacha la acción httpRequest para categorías
+          },
         setPage: (page) => {
             dispatch(setPage(page)); // Despacha la acción para actualizar `page`
           },

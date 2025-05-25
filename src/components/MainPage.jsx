@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-const MainPage = ({products, total, pages, fetching, categories, httpRequest, page, setPage, fetchProducts, authFirebase, addNewProduct}) => {
+const MainPage = ({products, total, pages, fetching, httpRequestCategories, categories, httpRequest, page, setPage, fetchProducts, authFirebase, addNewProduct}) => {
 
   const loadProducts = async (page) => {
     await fetchProducts(page);
@@ -13,9 +13,19 @@ const MainPage = ({products, total, pages, fetching, categories, httpRequest, pa
   await httpRequest(type, url)
   }
 
+  const getProductsByCategory = async (type, url) => {
+    await httpRequestCategories(type, url)
+  }
+
   console.log(authFirebase)
 
   console.log("thouse are products" , products)
+
+
+  console.log("those are categories", categories)
+
+
+
 
 
 useEffect(() => {
@@ -148,9 +158,10 @@ useEffect(() => {
             <h2 className="text-md font-semibold text-gray-800 mb-4">Category</h2>
             <div className="space-y-2">
             {categories && categories.map((category) => (
-              <label key={category.id} className="flex items-center">
+              <label key={category.slug} className="flex items-center">
               <input type="checkbox" className="mr-2" defaultChecked />
-              <span className="text-gray-600">{category.name}</span>
+              <span className="text-gray-600" onClick={() => getProductsByCategory("get",  `${category.url}?limit=${3}&skip=${5}`)}>{category.name}</span>
+              <span className="text-gray-600">{category.url}</span>
               </label>
             ))}
             </div>
