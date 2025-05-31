@@ -160,7 +160,7 @@ useEffect(() => {
             {categories && categories.map((category) => (
               <label key={category.slug} className="flex items-center">
               <input type="checkbox" className="mr-2" defaultChecked />
-              <span className="text-gray-600" onClick={() => getProductsByCategory("get",  `${category.url}?limit=${3}&skip=${5}`)}>{category.name}</span>
+              <span className="text-gray-600" onClick={() => getProductsByCategory("get",  `${category.url}?limit=${12}&skip=${0}`)}>{category.name}</span>
               <span className="text-gray-600">{category.url}</span>
               </label>
             ))}
@@ -202,9 +202,9 @@ useEffect(() => {
           ))}
           <button onClick={() =>
           { if (
-            page < 17
+            page < pages
           ) 
-          loadProducts(page -1)}} className="text-gray-600">{'>'}</button>
+          loadProducts(page +1)}} className="text-gray-600">{'>'}</button>
         </footer>
       </div>
     </div>
