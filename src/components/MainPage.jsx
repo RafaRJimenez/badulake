@@ -4,6 +4,9 @@ import { useEffect } from 'react';
 
 const MainPage = ({products, total, pages, fetching, httpRequestCategories, categories, httpRequest, page, setPage, fetchProducts, authFirebase, addNewProduct}) => {
 
+
+const [categoryUrl, setCategoryUrl] = useState("");
+
   const loadProducts = async (page) => {
     await fetchProducts(page);
      setPage(page)
@@ -13,8 +16,9 @@ const MainPage = ({products, total, pages, fetching, httpRequestCategories, cate
   await httpRequest(type, url)
   }
 
-  const getProductsByCategory = async (type, url) => {
-    await httpRequestCategories(type, url)
+  const getProductsByCategory = async (type, url, page, categoryName) => {
+    await httpRequestCategories(type, url, page, categoryName)
+    setPage(page)
   }
 
   console.log(authFirebase)
@@ -160,9 +164,11 @@ useEffect(() => {
             {categories && categories.map((category) => (
               <label key={category.slug} className="flex items-center">
               <input type="checkbox" className="mr-2" defaultChecked />
-              <span className="text-gray-600" onClick={() => getProductsByCategory("get",  `${category.url}?limit=${12}&skip=${0}`)}>{category.name}</span>
+              <span className="text-gray-600" onClick={() => {
+                   setCategoryUrl(category.url);
+               getProductsByCategory("get",  category.url, page)}}>{category.name}</span>
               <span className="text-gray-600">{category.url}</span>
-              </label>
+              </label> 
             ))}
             </div>
           </div>
@@ -171,7 +177,7 @@ useEffect(() => {
 
         <div>Total : {total} {pages} {page}</div>
            <div className="col-span-1 md:col-span-3">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"> 
             {products && products.map((product) => (
                 <div key={product.id} className="relative">
                   <img
@@ -194,17 +200,35 @@ useEffect(() => {
           <button onClick={() =>
           { if (
             page > 1
-          ) 
+          ) {
+              if (categoryUrl !== "") {
+            getProductsByCategory("get", categoryUrl, page -1)
+          } else {
           loadProducts(page -1)}}
+          }
+        }
            className="text-gray-600">{'<'}</button>
           {[...Array(pages)].map((_, index) => (
-            <button key={index} onClick={() => loadProducts(index +1)} className="text-gray-600">{index + 1}</button>
+            <button
+              key={index}
+              onClick={() =>
+                categoryUrl !== ""
+                  ? getProductsByCategory("get", categoryUrl, index + 1)
+                  : loadProducts(index + 1)
+              }
+              className="text-gray-600"
+            >
+              {index + 1}
+            </button>
           ))}
           <button onClick={() =>
           { if (
             page < pages
           ) 
-          loadProducts(page +1)}} className="text-gray-600">{'>'}</button>
+          if (categoryUrl !== "") {
+            getProductsByCategory("get", categoryUrl, page +1)
+          } else {
+          loadProducts(page +1)}}} className="text-gray-600">{'>'}</button>
         </footer>
       </div>
     </div>

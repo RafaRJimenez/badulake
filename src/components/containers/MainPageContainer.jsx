@@ -29,8 +29,8 @@ const mapDispatchToProps = (dispatch) => {
         httpRequest: (method, url) => {
             dispatch(httpRequest(method, url)) // Despacha la acción httpRequest
         },
-        httpRequestCategories: (method, url) => {
-            dispatch(httpRequestCategories(method, url)) // Despacha la acción httpRequest para categorías
+        httpRequestCategories: (type, url, page) => {
+            dispatch(httpRequestCategories(type, url, page)) // Despacha la acción httpRequest para categorías
           },
         setPage: (page) => {
             dispatch(setPage(page)); // Despacha la acción para actualizar `page`

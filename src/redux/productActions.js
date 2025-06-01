@@ -52,13 +52,15 @@ export const fetchProducts = (page = 1, filters = {}, sort = {}) => {
       }
   }
 
-  export const httpRequestCategories = (method, url) => {
+  export const httpRequestCategories = (method, url, page) => {
+     const limit = 12;
+    const skip = (page - 1) * limit; 
     return {
         type: API_CALL_REQUEST_BY_CATEGORY,
         payload: {
             request: {
                 method: method,
-                url: url
+                url: `${url}?limit=${limit}&skip=${skip}`
             },
             okAction: API_CALL_SUCCESS_BY_CATEGORY,
             failAction: API_CALL_FAILURE_BY_CATEGORY,
