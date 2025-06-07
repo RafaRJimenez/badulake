@@ -1,6 +1,7 @@
 import { SET_PAGE, API_CALL_REQUEST, API_CALL_SUCCESS, API_CALL_FAILURE, API_CALL_REQUEST_CATEGORIES, 
     API_CALL_SUCCESS_CATEGORIES, API_CALL_FAILURE_CATEGORIES,
-    API_CALL_REQUEST_BY_CATEGORY, API_CALL_SUCCESS_BY_CATEGORY, API_CALL_FAILURE_BY_CATEGORY
+    API_CALL_REQUEST_BY_CATEGORY, API_CALL_SUCCESS_BY_CATEGORY, API_CALL_FAILURE_BY_CATEGORY,
+    API_CALL_FEATURED, API_CALL_SUCCESS_FEATURED, API_CALL_FAILURE_FEATURED
   } from './productActions';
 
 
@@ -15,7 +16,8 @@ const initialState = {
     page: 1,
     total: 0,
     limit: 6,
-    pages: 0
+    pages: 0,
+    featured: null
 };
 
 
@@ -81,6 +83,25 @@ export const productsReducer = (state = initialState, action) => {
                 error: null,
             };
         case API_CALL_FAILURE_BY_CATEGORY:
+            return {
+                ...state,
+                fetching: false,
+                error: action.payload.error,
+            };
+        case API_CALL_FEATURED:
+            return {
+                ...state,
+                fetching: true,
+                error: null,
+            };
+        case API_CALL_SUCCESS_FEATURED:
+            return {
+                ...state,
+                fetching: false,
+                featured: action.payload.products[0], // Assuming the response has a 'products' field
+                error: null,
+            };
+        case API_CALL_FAILURE_FEATURED:
             return {
                 ...state,
                 fetching: false,

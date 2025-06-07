@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { connect } from 'react-redux'
-import { fetchProducts,setPage, httpRequest, httpRequestCategories } from '../../redux/productActions'  
+import { fetchProducts,setPage, httpRequest, httpRequestCategories, fetchRandomProduct } from '../../redux/productActions'  
 import MainPage from '../MainPage'
 import { selectPages } from '../../redux/selectors/pages.js'
 import { addBasket } from '../../redux/basketActions.js'
@@ -15,7 +15,8 @@ const mapStateToProps = (state) => {
         pages: selectPages(state),
         page: state.products.page,
         authFirebase: state.authFirebase,
-        categories: state.products.categories
+        categories: state.products.categories,
+        featured: state.products.featured,
     }    
 }
 
@@ -32,6 +33,9 @@ const mapDispatchToProps = (dispatch) => {
         httpRequestCategories: (type, url, page) => {
             dispatch(httpRequestCategories(type, url, page)) // Despacha la acción httpRequest para categorías
           },
+        fetchRandomProduct: (total) => {
+                dispatch(fetchRandomProduct(total)); // Despacha la acción para obtener un producto aleatorio
+        },
         setPage: (page) => {
             dispatch(setPage(page)); // Despacha la acción para actualizar `page`
           },

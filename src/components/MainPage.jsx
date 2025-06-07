@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-const MainPage = ({products, total, pages, fetching, httpRequestCategories, categories, httpRequest, page, setPage, fetchProducts, authFirebase, addNewProduct}) => {
+const MainPage = ({products, total, pages, fetching, httpRequestCategories, categories, httpRequest, page, setPage, fetchProducts, authFirebase, addNewProduct, fetchRandomProduct, featured}) => {
 
 
 const [categoryUrl, setCategoryUrl] = useState("");
@@ -11,6 +11,16 @@ const [categoryUrl, setCategoryUrl] = useState("");
     await fetchProducts(page);
      setPage(page)
   };
+
+  const randomProductIndex = total > 0 ? Math.floor(Math.random() * total) + 1 : null;
+
+  const getfetchRandomProduct = async () => {
+    console.log("Entrando en getfetchRandomProduct");
+    if (randomProductIndex !== null) {
+      await fetchRandomProduct(randomProductIndex);
+    }
+    console.log("Random product fetched" , featured);
+  }
 
   const getCategories = async (type, url) => {
   await httpRequest(type, url)
@@ -29,11 +39,15 @@ const [categoryUrl, setCategoryUrl] = useState("");
   console.log("those are categories", categories)
 
 
-
+useEffect(() => {
+  if (randomProductIndex !== null) {
+    getfetchRandomProduct();
+  }
+}, [randomProductIndex]);
 
 
 useEffect(() => {
-  loadProducts(page); 
+  loadProducts(page);  // Fetch a random product when the component mounts
 }, []);
 
 
