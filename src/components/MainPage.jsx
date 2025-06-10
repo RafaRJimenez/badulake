@@ -12,14 +12,12 @@ const [categoryUrl, setCategoryUrl] = useState("");
      setPage(page)
   };
 
-  const randomProductIndex = total > 0 ? Math.floor(Math.random() * total) + 1 : null;
+
+
 
   const getfetchRandomProduct = async () => {
     console.log("Entrando en getfetchRandomProduct");
-    if (randomProductIndex !== null) {
-      await fetchRandomProduct(randomProductIndex);
-    }
-    console.log("Random product fetched" , featured);
+      await fetchRandomProduct(total);
   }
 
   const getCategories = async (type, url) => {
@@ -40,10 +38,17 @@ const [categoryUrl, setCategoryUrl] = useState("");
 
 
 useEffect(() => {
-  if (randomProductIndex !== null) {
-    getfetchRandomProduct();
+  if (total > 0) {
+     getfetchRandomProduct();
   }
-}, [randomProductIndex]);
+}, [total]);
+
+
+useEffect(() => {
+  if (featured) {
+    console.log("Random product fetched", featured);
+  }
+}, [featured]);
 
 
 useEffect(() => {
@@ -83,7 +88,13 @@ useEffect(() => {
         </header>
 
         {/* Título del producto */}
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">SAMURAI KING RESTING</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-4"> {featured ? featured.title : ""}</h1>
+        <img className='w-96 h-96 object-cover rounded-full mx-auto my-8 border-8 border-gray-400 shadow-2xl"'
+  alt={featured ? featured.title : "Featured"}
+  src={featured ? featured.images[0] : ""} ></img>
+          <h3 className="text-md font-semibold text-gray-800 mb-2">
+              {featured ? featured.description : "Description"}
+            </h3>
 
         {/* Botón Add to Cart */}
         <button className="bg-black text-white px-6 py-2 mb-6 hover:bg-gray-800 transition">
@@ -103,17 +114,8 @@ useEffect(() => {
           {/* Photo of the day */}
           <div className="col-span-2">
             <h2 className="text-lg font-semibold text-gray-800 mb-2">Photo of the day</h2>
-            <h3 className="text-md font-semibold text-gray-800 mb-2">
-              About the Samurai King Resting
-            </h3>
-            <p className="text-gray-600 text-sm">
-              So how did the classical Latin become so incoherent? According to McClintock, a
-              15th century typesetter likely scrambled part of Cicero's De Finibus in order to
-              provide placeholder text to mockup various fonts for a type specimen book. So how
-              did the classical Latin become so incoherent? According to McClintock, a 15th
-              century typesetter likely scrambled part of Cicero's De Finibus in order to provide
-              placeholder text to mockup various fonts for a type specimen book.
-            </p>
+
+        
           </div>
 
           {/* People also buy */}
@@ -174,7 +176,7 @@ useEffect(() => {
           {/* Filtros (columna izquierda) */}
           <div className="col-span-1">
             <h2 className="text-md font-semibold text-gray-800 mb-4">Category</h2>
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
             {categories && categories.map((category) => (
               <label key={category.slug} className="flex items-center">
               <input type="checkbox" className="mr-2" defaultChecked />
@@ -184,7 +186,26 @@ useEffect(() => {
               <span className="text-gray-600">{category.url}</span>
               </label> 
             ))}
-            </div>
+            </div> */}
+            {categories && categories.length > 0 && (
+  <div className="w-full bg-white py-4 px-2 mb-6 shadow rounded flex flex-wrap gap-2 justify-center">
+    {categories
+      .slice() // para no mutar el array original
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map((category) => (
+        <button
+          key={category.slug}
+          className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded text-gray-700 font-semibold transition"
+          onClick={() => {
+            setCategoryUrl(category.url);
+            getProductsByCategory("get", category.url, page);
+          }}
+        >
+          {category.name}
+        </button>
+      ))}
+  </div>
+)}
           </div>
 
      
