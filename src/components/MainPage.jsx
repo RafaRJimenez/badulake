@@ -7,6 +7,8 @@ const MainPage = ({products, total, pages, fetching, httpRequestCategories, cate
 
 const [categoryUrl, setCategoryUrl] = useState("");
 
+const [featuredLoaded, setFeaturedLoaded] = useState(false);
+
   const loadProducts = async (page) => {
     await fetchProducts(page);
      setPage(page)
@@ -38,10 +40,11 @@ const [categoryUrl, setCategoryUrl] = useState("");
 
 
 useEffect(() => {
-  if (total > 0) {
+  if (total >  0 && !featuredLoaded) {
      getfetchRandomProduct();
+    setFeaturedLoaded(true);
   }
-}, [total]);
+}, [total, featuredLoaded]);
 
 
 useEffect(() => {
@@ -195,7 +198,7 @@ useEffect(() => {
           className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded text-gray-700 font-semibold transition"
           onClick={() => {
             setCategoryUrl(category.url);
-            getProductsByCategory("get", category.url, page);
+            getProductsByCategory("get", category.url, 1);
           }}
         >
           {category.name}
