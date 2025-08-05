@@ -97,18 +97,15 @@ useEffect(() => {
             </h3>
 
         {/* Botón Add to Cart */}
-        <button className="bg-black text-white px-6 py-2 mb-6 hover:bg-gray-800 transition">
+        <button className="bg-black text-white px-6 py-2 mb-6 hover:bg-gray-800 transition"
+          onClick={() => addNewProduct({ name: featured ? featured.title : "Default Product", price: featured ? featured.price : 0, image: featured ? featured.images[0] : "" })}
+        >
+        
           ADD TO CART
         </button>
 
         {/* Imagen principal */}
-        <div className="mb-6">
-          <img
-            alt="Samurai King Resting"
-            className="w-full h-auto object-cover"
-          />
-        </div>
-
+    
         {/* Sección de información */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Photo of the day */}
