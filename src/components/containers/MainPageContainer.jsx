@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { connect } from 'react-redux'
-import { fetchProducts,setPage, httpRequest, httpRequestCategories, fetchRandomProduct } from '../../redux/productActions'  
+import { fetchProducts,setPage, httpRequest, httpRequestCategories, fetchRandomProduct, fetchPeopleAlsoBuy } from '../../redux/productActions'  
 import MainPage from '../MainPage'
 import { selectPages } from '../../redux/selectors/pages.js'
 import { addBasket } from '../../redux/basketActions.js'
@@ -17,6 +17,7 @@ const mapStateToProps = (state) => {
         authFirebase: state.authFirebase,
         categories: state.products.categories,
         featured: state.products.featured,
+        peopleAlsoBuy: state.products.peopleAlsoBuy,
     }    
 }
 
@@ -44,6 +45,9 @@ const mapDispatchToProps = (dispatch) => {
             // console.log("product", product)
             dispatch(addBasket(product)); // Despacha la acción para agregar el producto al carrito
           },
+        fetchPeopleAlsoBuy: (total) => {
+            dispatch(fetchPeopleAlsoBuy(total));
+         } // Despacha la acción para obtener productos que también compran las personas
     }
 }
 

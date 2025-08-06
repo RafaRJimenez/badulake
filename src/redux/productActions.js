@@ -14,6 +14,7 @@ export const API_CALL_PEOPLE_ALSO_BUY = 'API_CALL_PEOPLE_ALSO_BUY'; // Watcher S
 export const API_CALL_SUCCESS_PEOPLE_ALSO_BUY = 'API_CALL_SUCCESS_PEOPLE_ALSO_BUY'; // Worker Saga Dispatches
 export const API_CALL_FAILURE_PEOPLE_ALSO_BUY = 'API_CALL_FAILURE_PEOPLE_ALSO_BUY'; // Worker Saga Dispatches
 
+
 export const SET_PAGE = 'SET_PAGE';
 
 
@@ -88,6 +89,28 @@ export const fetchRandomProduct = (total) => {
       okAction: API_CALL_SUCCESS_FEATURED,
       failAction: API_CALL_FAILURE_FEATURED,
       context: 'featured',
+    },
+  };
+};
+
+
+export const fetchPeopleAlsoBuy = (total, count = 3) => {
+  const indices = [];
+  while (indices.length < count) {
+    const idx = Math.floor(Math.random() * total);
+    if (!indices.includes(idx)) indices.push(idx);
+  }
+  const requests = indices.map(idx => ({
+    method: 'get',
+    url: `https://dummyjson.com/products?limit=1&skip=${idx}`,
+  }));
+  return {
+    type: API_CALL_PEOPLE_ALSO_BUY,
+    payload: {
+      requests,
+      okAction: API_CALL_SUCCESS_PEOPLE_ALSO_BUY,
+      failAction: API_CALL_FAILURE_PEOPLE_ALSO_BUY,
+      context: 'peopleAlsoBuy',
     },
   };
 };

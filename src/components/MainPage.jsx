@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-const MainPage = ({products, total, pages, fetching, httpRequestCategories, categories, httpRequest, page, setPage, fetchProducts, authFirebase, addNewProduct, fetchRandomProduct, featured}) => {
+const MainPage = ({products, total, pages, fetching, httpRequestCategories, categories, httpRequest, page, setPage, fetchProducts, authFirebase, addNewProduct, fetchRandomProduct, featured, fetchPeopleAlsoBuy, peopleAlsoBuy}) => {
 
 
 const [categoryUrl, setCategoryUrl] = useState("");
@@ -43,6 +43,8 @@ useEffect(() => {
   if (total >  0 && !featuredLoaded) {
      getfetchRandomProduct();
     setFeaturedLoaded(true);
+    fetchPeopleAlsoBuy(total);
+
   }
 }, [total, featuredLoaded]);
 
@@ -119,35 +121,23 @@ useEffect(() => {
           </div>
 
           {/* People also buy */}
-          <div>
-            <h3 className="text-md font-semibold text-gray-800 mb-2">People also buy</h3>
-            <div className="grid grid-cols-3 gap-2">
-              <div>
-                <img
-                  alt="Food Egg Basket"
-                  className="w-full h-auto"
-                />
-                <p className="text-sm text-gray-600">Food Egg Basket</p>
-                <p className="text-sm font-semibold text-gray-800">$29.89</p>
-              </div>
-              <div>
-                <img
-                  alt="Food Egg Balloon"
-                  className="w-full h-auto"
-                />
-                <p className="text-sm text-gray-600">Food Egg Balloon</p>
-                <p className="text-sm font-semibold text-gray-800">$29.89</p>
-              </div>
-              <div>
-                <img
-                  alt="Food Egg Balloon"
-                  className="w-full h-auto"
-                />
-                <p className="text-sm text-gray-600">Food Egg Balloon</p>
-                <p className="text-sm font-semibold text-gray-800">$29.89</p>
-              </div>
+          <div className="col-span-1">
+            <h2 className="text-lg font-semibold text-gray-800 mb-2">People also buy</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {peopleAlsoBuy && peopleAlsoBuy.map((product) => (
+                <div key={product.id} className="relative">
+                  <img
+                    src={product.thumbnail}
+                    alt={product.title}
+                    className="w-full h-auto object-cover mb-2"
+                  />
+                  <h3 className="text-sm font-semibold text-gray-800">{product.title}</h3>
+                  <p className="text-sm text-gray-600">{product.price}€</p>
+                  <button className='border-4' onClick={() => addNewProduct({ name: product.title, price: product.price, image: product.thumbnail })}>ADD TO CART</button>
+                </div>
+              ))}
             </div>
-          </div>
+        </div>
         </div>
 
         {/* Pie de página */}
