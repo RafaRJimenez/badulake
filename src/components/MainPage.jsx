@@ -58,6 +58,7 @@ useEffect(() => {
 
 useEffect(() => {
   loadProducts(page);  // Fetch a random product when the component mounts
+  getCategories("get", 'https://dummyjson.com/products/categories');
 }, []);
 
 
@@ -97,9 +98,7 @@ useEffect(() => {
         <img className='w-96 h-96 object-cover rounded-full mx-auto my-8 border-8 border-gray-400 shadow-2xl"'
   alt={featured ? featured.title : "Featured"}
   src={featured ? featured.images[0] : ""} ></img>
-          <h3 className="text-md font-semibold text-gray-800 mb-2">
-              {featured ? featured.description : "Description"}
-            </h3>
+        
 
         {/* Botón Add to Cart */}
         <button className="bg-black text-white px-6 py-2 mb-6 hover:bg-gray-800 transition"
@@ -115,7 +114,10 @@ useEffect(() => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Photo of the day */}
           <div className="col-span-2">
-            <h2 className="text-lg font-semibold text-gray-800 mb-2">Photo of the day</h2>
+             <h2 className='text-left'>About the {featured ? featured.title : ""}</h2>
+          <h3 className="text-left font-semibold text-gray-800 mb-2">
+              {featured ? featured.description : "Description"}
+            </h3>
 
         
           </div>
@@ -200,7 +202,7 @@ useEffect(() => {
 
      
 
-        <div>Total : {total} {pages} {page}</div>
+ 
            <div className="col-span-1 md:col-span-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"> 
             {products && products.map((product) => (
@@ -221,6 +223,7 @@ useEffect(() => {
    
 
         {/* Paginación */}
+               <div>Total : {total} {pages} {page}</div>
         <footer className="mt-8 flex justify-center items-center space-x-2">
           <button onClick={() =>
           { if (
