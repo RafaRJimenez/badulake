@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 const MainPage = ({products, total, pages, fetching, httpRequestCategories, categories, httpRequest, page, setPage, fetchProducts, authFirebase, addNewProduct, fetchRandomProduct, featured, fetchPeopleAlsoBuy, peopleAlsoBuy}) => {
 
 
+
 const [categoryUrl, setCategoryUrl] = useState("");
 
 const [featuredLoaded, setFeaturedLoaded] = useState(false);
@@ -73,6 +74,7 @@ useEffect(() => {
             <div className="bg-gray-100 font-sans">
          <div className="max-w-4xl mx-auto p-4">
         {/* Encabezado */}
+        
         <header className="flex justify-between items-center mb-6">
           <div className="text-lg font-bold text-gray-700">BEJAMAS_</div>
           <div className="text-gray-700">
@@ -123,23 +125,48 @@ useEffect(() => {
           </div>
 
           {/* People also buy */}
-          <div className="col-span-1">
-            <h2 className="text-lg font-semibold text-gray-800 mb-2">People also buy</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {peopleAlsoBuy && peopleAlsoBuy.map((product) => (
-                <div key={product.id} className="relative">
-                  <img
-                    src={product.thumbnail}
-                    alt={product.title}
-                    className="w-full h-auto object-cover mb-2"
-                  />
-                  <h3 className="text-sm font-semibold text-gray-800">{product.title}</h3>
-                  <p className="text-sm text-gray-600">{product.price}€</p>
-                  <button className='border-4' onClick={() => addNewProduct({ name: product.title, price: product.price, image: product.thumbnail })}>ADD TO CART</button>
-                </div>
-              ))}
-            </div>
+       <div className="col-span-1">
+  <h2 className="text-lg font-semibold text-gray-800 mb-2">People also buy</h2>
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    {peopleAlsoBuy && peopleAlsoBuy.map((product) => (
+      <div 
+        key={product.id} 
+        className="relative group overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
+      >
+        <div className="aspect-w-1 aspect-h-1">
+          <img
+            src={product.thumbnail}
+            alt={product.title}
+            className="w-full h-full object-cover"
+          />
+          {/* Overlay oscuro con fade */}
+          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300"/>
+          
+          {/* Botón que aparece en hover */}
+          <button 
+            onClick={() => addNewProduct({ 
+              name: product.title, 
+              price: product.price, 
+              image: product.thumbnail 
+            })}
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 
+                     opacity-0 group-hover:opacity-100 transition-all duration-300
+                     bg-white text-gray-800 px-4 py-2 rounded-full
+                     shadow-lg hover:bg-gray-100 hover:scale-105
+                     font-medium text-sm tracking-wide
+                     transform hover:shadow-xl"
+          >
+            ADD TO CART
+          </button>
         </div>
+        <div className="p-3 bg-white">
+          <h3 className="text-sm font-semibold text-gray-800">{product.title}</h3>
+          <p className="text-sm text-gray-600 mt-1">{product.price}€</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
         </div>
 
         {/* Pie de página */}
