@@ -113,7 +113,7 @@ useEffect(() => {
         {/* Imagen principal */}
     
         {/* Sección de información */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-6">
           {/* Photo of the day */}
           <div className="col-span-2">
              <h2 className='text-left'>About the {featured ? featured.title : ""}</h2>
@@ -127,7 +127,7 @@ useEffect(() => {
           {/* People also buy */}
        <div className="col-span-1">
   <h2 className="text-lg font-semibold text-gray-800 mb-2">People also buy</h2>
-  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+  <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-4">
     {peopleAlsoBuy && peopleAlsoBuy.map((product) => (
       <div 
         key={product.id} 
@@ -170,12 +170,6 @@ useEffect(() => {
         </div>
 
         {/* Pie de página */}
-        <footer className="mt-8 flex justify-between items-center border-t pt-4">
-          <div className="text-gray-600 text-sm">PHOTOGRAPHY / PREMIUM PHOTOS</div>
-          <div className="text-gray-600 text-sm">
-            Sort By <span className="font-semibold">Price</span> ▼
-          </div>
-        </footer>
          </div>
         </div>
         <div className="bg-gray-100 font-sans min-h-screen">

@@ -24,13 +24,13 @@ function App() {
     <div className="App">
       <ToastContainer />
       <Router>
-        <aside className="w-full bg-gray-800 text-white p-4">
+        <aside className="w-full bg-gray-800 text-white p-4 absolute top-0 left-0 z-10">
           {/* Botón hamburguesa */}
           <div className="flex justify-between items-center md:hidden">
             <span className="text-xl font-bold">Menu</span>
-            <button
+            <button 
+            className="absolute top-4 right-4 md:hidden"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-white focus:outline-none"
             >
               <svg
                 className="w-7 h-7"

@@ -54,7 +54,7 @@ useEffect(() => {
       <div
         className={`transition-transform duration-300 ease-in-out transform ${
           isOpen ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
-        } bg-white shadow-lg rounded-lg p-4 w-80`}
+        } bg-white shadow-lg rounded-lg p-4 w-80 z-100`}
       >
         <div className='fixed right-1 top-1'>
           <IoIosClose size={32} className="text-gray-800 hover:text-red-500 transition duration-300" onClick={closeBasket} />
