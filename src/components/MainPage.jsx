@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 const MainPage = ({products, total, pages, fetching, httpRequestCategories, categories, httpRequest, page, setPage, fetchProducts, authFirebase, addNewProduct, fetchRandomProduct, featured, fetchPeopleAlsoBuy, peopleAlsoBuy}) => {
 
-
+const [showCategories, setShowCategories] = useState(false);
 
 const [categoryUrl, setCategoryUrl] = useState("");
 
@@ -72,8 +72,8 @@ useEffect(() => {
             <h2 onClick={() => getCategories("get", 'https://dummyjson.com/products/categories')}> VAMOS A CARGAR CATEGORÍASSS</h2>
             <p onClick={() => fetchProducts(6)}>get products</p>
             <div className="bg-gray-100 font-sans">
-         <div className="max-w-4xl mx-auto p-4">
-        {/* Encabezado */}
+         <div className="max-w-6xl mx-auto p-4">
+        {/* Encabezado */}sadfasdf
         
         <header className="flex justify-between items-center mb-6">
           <div className="text-lg font-bold text-gray-700">BEJAMAS_</div>
@@ -187,8 +187,7 @@ useEffect(() => {
         {/* Contenido principal */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {/* Filtros (columna izquierda) */}
-          <div className="col-span-1">
-            <h2 className="text-md font-semibold text-gray-800 mb-4">Category</h2>
+         
             {/* <div className="space-y-2">
             {categories && categories.map((category) => (
               <label key={category.slug} className="flex items-center">
@@ -200,26 +199,40 @@ useEffect(() => {
               </label> 
             ))}
             </div> */}
-            {categories && categories.length > 0 && (
-  <div className="w-full bg-white py-4 px-2 mb-6 shadow rounded flex flex-wrap gap-2 justify-center">
-    {categories
-      .slice() // para no mutar el array original
-      .sort((a, b) => a.name.localeCompare(b.name))
-      .map((category) => (
-        <button
-          key={category.slug}
-          className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded text-gray-700 font-semibold transition"
-          onClick={() => {
-            setCategoryUrl(category.url);
-            getProductsByCategory("get", category.url, 1);
-          }}
-        >
-          {category.name}
-        </button>
-      ))}
+ <div className="col-span-1">
+  {/* Botón solo visible en mobile */}
+  <button
+    className="block md:hidden mb-2 px-4 py-2 bg-gray-800 text-white rounded" 
+    onClick={() => setShowCategories(!showCategories)}
+  >
+    {showCategories ? "Ocultar categorías" : "Mostrar categorías"}
+  </button>
+
+  {/* Categorías: visibles en desktop/tablet, o si showCategories en mobile */}
+  <div className={`${showCategories ? 'block' : 'hidden'} md:block`}>
+    <h2 className="text-md font-semibold text-gray-800 mb-4">Category</h2>
+    {categories && categories.length > 0 && (
+      <div className="w-full bg-white py-4 px-2 mb-6 shadow rounded flex flex-wrap gap-2 justify-center">
+        {categories
+          .slice()
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map((category) => (
+            <button
+              key={category.slug}
+              className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded text-gray-700 font-semibold transition"
+              onClick={() => {
+                setCategoryUrl(category.url);
+                getProductsByCategory("get", category.url, 1);
+              }}
+            >
+              {category.name}
+            </button>
+              ))}
+      </div>
+    )}
   </div>
-)}
-          </div>
+</div>
+  
 
      
 
@@ -231,7 +244,7 @@ useEffect(() => {
                   <img
                     src={product.thumbnail}
                     alt={product.title}
-                    className="w-full h-auto object-cover mb-2"
+                    className="w-24 h-24 md:w-full mx-auto md:h-auto object-cover mb-2"
                   />
                   <h3 className="text-sm font-semibold text-gray-800">{product.title}</h3>
                   <p className="text-sm text-gray-600">{product.price}€</p>

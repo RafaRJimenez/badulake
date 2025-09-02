@@ -50,7 +50,7 @@ useEffect(() => {
 
 
   return (
-    <div className="fixed top-44 right-10">
+    <div className="fixed z-10 top-44 right-10">
       <div
         className={`transition-transform duration-300 ease-in-out transform ${
           isOpen ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'

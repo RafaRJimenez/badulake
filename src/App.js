@@ -24,7 +24,7 @@ function App() {
     <div className="App">
       <ToastContainer />
       <Router>
-        <aside className="w-full bg-gray-800 text-white p-4 absolute top-0 left-0 z-10">
+        <aside className="w-full bg-gray-800 text-white p-4 absolute top-0 left-0 z-20">
           {/* Botón hamburguesa */}
           <div className="flex justify-between items-center md:hidden">
             <span className="text-xl font-bold">Menu</span>
