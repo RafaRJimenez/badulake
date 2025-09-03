@@ -99,7 +99,7 @@ useEffect(() => {
         <h1 className="text-3xl font-bold text-gray-800 mb-4"> {featured ? featured.title : ""}</h1>
         <img className='w-96 h-96 object-cover rounded-full mx-auto my-8 border-8 border-gray-400 shadow-2xl"'
   alt={featured ? featured.title : "Featured"}
-  src={featured ? featured.images[0] : ""} ></img>
+  src={featured && featured.images && featured.images[0] ? featured.images[0] : null}></img>
         
 
         {/* Botón Add to Cart */}
@@ -202,7 +202,7 @@ useEffect(() => {
  <div className="col-span-1">
   {/* Botón solo visible en mobile */}
   <button
-    className="block md:hidden mb-2 px-4 py-2 bg-gray-800 text-white rounded" 
+    className="block md:hidden mb-2 px-4 py-2 bg-gray-800 text-white mx-auto rounded w-full" 
     onClick={() => setShowCategories(!showCategories)}
   >
     {showCategories ? "Ocultar categorías" : "Mostrar categorías"}

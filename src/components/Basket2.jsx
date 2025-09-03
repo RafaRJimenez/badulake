@@ -3,6 +3,7 @@ import { IoIosClose } from "react-icons/io";
 import { groupedBasket } from './services/BasketService';
 import { FiMinusCircle } from "react-icons/fi";
 import { FiPlusCircle } from "react-icons/fi";
+import { IoMdCart } from "react-icons/io";
 
 
 const Basket2 = ({ callGetBasket, basket, callDeleteBasket, callDeleteFullBasket, callAddBasket, callDeleteWholeProduct  }) => {
@@ -51,12 +52,20 @@ useEffect(() => {
 
   return (
     <div className="fixed z-10 top-44 right-10">
+     <button
+        className="fixed top-[4.25rem] right-2 md:top-24 md:right-10 bg-gray-800 text-white rounded-full p-3 shadow-lg hover:bg-gray-700 transition duration-300 mb-2"
+        onClick={() => setIsOpen((prev) => !prev)}
+        aria-label="Abrir carrito"
+      >
+        <IoMdCart size={28} />
+      </button>
       <div
         className={`transition-transform duration-300 ease-in-out transform ${
           isOpen ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
-        } bg-white shadow-lg rounded-lg p-4 w-80 z-100`}
+        } bg-white shadow-lg bg-slate-100 rounded-lg p-4 w-80 z-100`}
       >
-        <div className='fixed right-1 top-1'>
+        <div className='fixed right-1 top-1'
+        >
           <IoIosClose size={32} className="text-gray-800 hover:text-red-500 transition duration-300" onClick={closeBasket} />
         </div>
         <h2 className="text-lg font-bold text-gray-800 mb-4">Carrito</h2>

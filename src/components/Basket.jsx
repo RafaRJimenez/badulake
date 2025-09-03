@@ -47,10 +47,10 @@ const Basket = ({ cartItems, onRemove }) => {
 
   return (
     <div className="p-4 bg-gray-100 rounded-lg shadow-md">
-      <div className="flex items-center justify-between mb-4">
+      {/* <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-bold text-gray-800">Carrito</h2>
         <FaShoppingCart className="text-2xl text-gray-600" />
-      </div>
+      </div> */}
       {/* {cartItems.length === 0 ? (
         <p className="text-gray-600">El carrito está vacío.</p>
       ) : (
