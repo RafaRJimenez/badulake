@@ -61,7 +61,7 @@ useEffect(() => {
       </button>
       <div
         className={`transition-transform duration-300 ease-in-out transform ${
-          isOpen ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
+          isOpen ? 'translate-y-0 opacity-100 pointer-events-auto' : 'translate-y-full opacity-0 pointer-events-none'
         } bg-white shadow-lg bg-slate-100 rounded-lg p-4 w-80 z-100`}
       >
         <div className='fixed right-1 top-1'

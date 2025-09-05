@@ -13,6 +13,9 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 const mapStateToProps = (state) => {
+    console.log("this is state", state);
+    console.log("this is loged", state.userState.loged);
+    console.log("this is fetching", state.userState.fetching);
     return {
         loged: state.userState.loged,
         fetching: state.userState.fetching

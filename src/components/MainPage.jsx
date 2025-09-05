@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import LogOutFirebaseContainer from './containers/LogOutFirebaseContainer';
 
 const MainPage = ({products, total, pages, fetching, httpRequestCategories, categories, httpRequest, page, setPage, fetchProducts, authFirebase, addNewProduct, fetchRandomProduct, featured, fetchPeopleAlsoBuy, peopleAlsoBuy}) => {
 
@@ -67,7 +68,10 @@ useEffect(() => {
 
     return (
         <div>
-     <div>{authFirebase?.user?.email || 'No user logged in'}</div>
+     <div>
+  <div>{authFirebase?.user?.email || 'No user logged in'}</div>
+  <LogOutFirebaseContainer />
+  </div>
             <h1>Main Page</h1>
             <h2 onClick={() => getCategories("get", 'https://dummyjson.com/products/categories')}> VAMOS A CARGAR CATEGORÍASSS</h2>
             <p onClick={() => fetchProducts(6)}>get products</p>
