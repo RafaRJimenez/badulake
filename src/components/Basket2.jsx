@@ -42,8 +42,8 @@ const Basket2 = ({ callGetBasket, basket, callDeleteBasket, callDeleteFullBasket
 useEffect(() => { 
   const mainTask = async () => {
     await getNewBasket(); // Llama a la función para obtener el carrito
-  const grouped = groupedBasket(basket); 
-  setNewBasket(grouped);
+  // const grouped = groupedBasket(basket); 
+  setNewBasket(basket);
   console.log("this is new basket", newBasket) }
   console.log("this is basket", basket)
   mainTask(); // Llama a la función principal

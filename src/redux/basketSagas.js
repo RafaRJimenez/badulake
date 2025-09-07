@@ -3,15 +3,47 @@ import { toast } from 'react-toastify'; // Asumiendo que usas react-toastify
 import { ADD_BASKET, ADD_BASKET_SUCCESS, ADD_BASKET_FAILURE, GET_BASKET, GET_BASKET_SUCCESS, GET_BASKET_FAILURE, EDIT_BASKET, EDIT_BASKET_SUCCESS, 
     EDIT_BASKET_FAILURE, DELETE_BASKET, DELETE_BASKET_SUCCESS, DELETE_BASKET_FAILURE, DELETE_FULL_BASKET,
      DELETE_FULL_BASKET_SUCCESS, DELETE_FULL_BASKET_FAILURE, DELETE_WHOLE_PRODUCT, DELETE_WHOLE_PRODUCT_SUCCESS, DELETE_WHOLE_PRODUCT_FAILURE } from './basketActions';
-import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore'; // Asegúrate de importar Firestore
+import { collection, addDoc, getDocs, setDoc, getDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore'; // Asegúrate de importar Firestore
 import { db } from '../firebase/index.js'; // Asegúrate de importar tu configuración de Firebase
 
 
 function* addBasketSaga(action) {
-    try {
-        const basket = action.payload;
-        const docRef = yield call(addDoc, collection(db, 'basket'), basket);
-        yield put({ type: ADD_BASKET_SUCCESS, payload: { id: docRef.id, ...basket } });
+    // try {
+    //     console.log("action en saga", action);
+    //     const basket = action.payload;
+    //     const user = action.payload.user;
+    //     const docRef = yield call(addDoc, collection(db, 'basket'), basket);
+    //     yield put({ type: ADD_BASKET_SUCCESS, payload: { id: docRef.id, ...basket } });
+    //     // toast.success('Producto añadido al carrito con éxito');
+    // } catch (error) {
+    //     yield put({ type: ADD_BASKET_FAILURE, payload: error.message });
+    //     toast.error('Error al añadir producto al carrito');
+    // }
+        try {
+        const { user, name, price, image, id } = action.payload;
+        if (!user) throw new Error("No hay usuario definido");
+
+        // Referencia al documento del carrito del usuario
+        const cartRef = doc(db, 'basket', user);
+
+        // Obtener el carrito actual
+        const cartSnap = yield call(getDoc, cartRef);
+        let products = cartSnap.exists() ? cartSnap.data().products : [];
+
+        // Buscar si el producto ya está en el carrito
+        const existing = products.find(p => p.id === id);
+        if (existing) {
+            products = products.map(p =>
+                p.id === id ? { ...p, quantity: (p.quantity || 1) + 1 } : p
+            );
+        } else {
+            products.push({ id, name, price, image, quantity: 1 });
+        }
+
+        // Actualizar el carrito en Firestore
+        yield call(setDoc, cartRef, { products }, { merge: true });
+
+        yield put({ type: ADD_BASKET_SUCCESS, payload: products });
         // toast.success('Producto añadido al carrito con éxito');
     } catch (error) {
         yield put({ type: ADD_BASKET_FAILURE, payload: error.message });

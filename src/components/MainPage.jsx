@@ -33,7 +33,7 @@ const [featuredLoaded, setFeaturedLoaded] = useState(false);
     setPage(page)
   }
 
-  console.log(authFirebase)
+  console.log("THIS IS THE USER", authFirebase)
 
   console.log("thouse are products" , products)
 
@@ -108,7 +108,10 @@ useEffect(() => {
 
         {/* Botón Add to Cart */}
         <button className="bg-black text-white px-6 py-2 mb-6 hover:bg-gray-800 transition"
-          onClick={() => addNewProduct({ name: featured ? featured.title : "Default Product", price: featured ? featured.price : 0, image: featured ? featured.images[0] : "" })}
+          onClick={() =>
+           addNewProduct({ user: authFirebase?.user?.uid || "guest",
+            name: featured ? featured.title : "Default Product", id: featured ? featured.id : 0,
+             price: featured ? featured.price : 0, image: featured ? featured.images[0] : "" })}
         >
         
           ADD TO CART
@@ -149,9 +152,11 @@ useEffect(() => {
           {/* Botón que aparece en hover */}
           <button 
             onClick={() => addNewProduct({ 
+              user: authFirebase?.user?.uid || "guest",
               name: product.title, 
               price: product.price, 
-              image: product.thumbnail 
+              image: product.thumbnail,
+              id: product.id
             })}
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 
                      opacity-0 group-hover:opacity-100 transition-all duration-300
@@ -252,7 +257,10 @@ useEffect(() => {
                   />
                   <h3 className="text-sm font-semibold text-gray-800">{product.title}</h3>
                   <p className="text-sm text-gray-600">{product.price}€</p>
-                  <button className='border-4' onClick={() => addNewProduct({ name: product.title, price: product.price, image: product.thumbnail })}>ADD TO CART</button>
+                  <button className='border-4' onClick={() => addNewProduct({
+                    user: authFirebase?.user?.uid || "guest",
+                     name: product.title, price: product.price, image: product.thumbnail,
+                      id: product.id })}>ADD TO CART</button>
                 </div>
             ))}
             </div>
