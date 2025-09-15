@@ -28,7 +28,11 @@ function* addBasketSaga(action) {
 
         // Obtener el carrito actual
         const cartSnap = yield call(getDoc, cartRef);
-        let products = cartSnap.exists() ? cartSnap.data().products : [];
+        let products = [];
+            if (cartSnap.exists()) {
+            products = cartSnap.data().products || [];
+        }
+        // let products = cartSnap.exists() ? cartSnap.data().products : [];
 
         // Buscar si el producto ya está en el carrito
         const existing = products.find(p => p.id === id);
