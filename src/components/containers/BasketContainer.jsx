@@ -29,7 +29,8 @@ const mapStateToProps = (state) => {
     // console.log('Basket changed:',state.basket.basket);
     return {
         basket: state.basket.basket,
-        fetching: state.basket.fetching
+        fetching: state.basket.fetching,
+         authFirebase: state.authFirebase
     }
 }
 

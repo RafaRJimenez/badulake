@@ -6,10 +6,10 @@ import { FiPlusCircle } from "react-icons/fi";
 import { IoMdCart } from "react-icons/io";
 
 
-const Basket2 = ({ callGetBasket, basket, callDeleteBasket, callDeleteFullBasket, callAddBasket, callDeleteWholeProduct  }) => {
+const Basket2 = ({ callGetBasket, basket, callDeleteBasket, authFirebase, callDeleteFullBasket, callAddBasket, callDeleteWholeProduct  }) => {
   const [isOpen, setIsOpen] = useState(false); 
   const [newBasket, setNewBasket] = useState([]); // Estado para almacenar el nuevo carrito
-
+   const [userProducts, setUserProducts] = useState([]);
  
     const getNewBasket = async () => {
     
@@ -27,6 +27,8 @@ const Basket2 = ({ callGetBasket, basket, callDeleteBasket, callDeleteFullBasket
   //   await Promise.all(item.ids.map((id) => callDeleteBasket(id)));
   //   console.log('Después de eliminar:', basket);
   // }
+
+   console.log("THIS IS THE USER", authFirebase)
 
   useEffect(() => {
     callGetBasket();
@@ -49,7 +51,21 @@ useEffect(() => {
   mainTask(); // Llama a la función principal
 }, [basket]);
 
+ 
 
+  useEffect(() => {
+    let userCart;
+
+    if (authFirebase?.user?.uid) {
+      // Si hay usuario logueado, buscamos su carrito
+      userCart = basket.find(cart => cart.id === authFirebase.user.uid);
+    } else {
+      // Si no hay usuario logueado, buscamos el carrito invitado
+      userCart = basket.find(cart => cart.id === "guest");
+    }
+
+    setUserProducts(userCart?.products || []);
+  }, [basket, authFirebase]);
   return (
     <div className="fixed z-10 top-44 right-10">
      <button
@@ -69,11 +85,14 @@ useEffect(() => {
           <IoIosClose size={32} className="text-gray-800 hover:text-red-500 transition duration-300" onClick={closeBasket} />
         </div>
         <h2 className="text-lg font-bold text-gray-800 mb-4">Carrito</h2>
+        <hr></hr>
+        <h3>el usuario es {authFirebase?.user?.uid || 'No user logged in'}</h3>
         {basket.length === 0 ? (
           <p className="text-gray-600">El carrito está vacío.</p>
         ) : (
-          newBasket.map((item, index) => (
-            <div
+          userProducts.map(
+            (item, index) => (   
+                        <div
               key={index}
               className="p-1"
             >   <div className="flex items-center justify-between">
