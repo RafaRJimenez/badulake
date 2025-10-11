@@ -47,7 +47,7 @@ function* addBasketSaga(action) {
         // Actualizar el carrito en Firestore
         yield call(setDoc, cartRef, { products }, { merge: true });
 
-        yield put({ type: ADD_BASKET_SUCCESS, payload: products });
+        yield put({ type: ADD_BASKET_SUCCESS, payload: {id: user, products} });
         // toast.success('Producto añadido al carrito con éxito');
     } catch (error) {
         yield put({ type: ADD_BASKET_FAILURE, payload: error.message });

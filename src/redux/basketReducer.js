@@ -15,8 +15,12 @@ export const basketReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_BASKET:
             return { ...state, loading: true, error: null };
-        case ADD_BASKET_SUCCESS:
-            return { ...state, loading: false, basket: [...state.basket, action.payload] };
+       case ADD_BASKET_SUCCESS:
+    const exists = state.basket.some(item => item.id === action.payload.id);
+    const updatedBasket = exists
+        ? state.basket.map(item => item.id === action.payload.id ? action.payload : item)
+        : [...state.basket, action.payload];
+    return { ...state, loading: false, basket: updatedBasket };
         case ADD_BASKET_FAILURE:
             return { ...state, loading: false, error: action.payload };
         case GET_BASKET:
@@ -28,8 +32,8 @@ export const basketReducer = (state = initialState, action) => {
         case EDIT_BASKET:
             return { ...state, loading: true, error: null };
         case EDIT_BASKET_SUCCESS:
-            const updatedBasket = state.basket.map(item => item.id === action.payload.id ? action.payload : item);
-            return { ...state, loading: false, basket: updatedBasket };
+            const updatedBaskets = state.basket.map(item => item.id === action.payload.id ? action.payload : item);
+            return { ...state, loading: false, basket: updatedBaskets };
         case EDIT_BASKET_FAILURE:
             return { ...state, loading: false, error: action.payload };
         case DELETE_BASKET:

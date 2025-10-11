@@ -41,15 +41,15 @@ const Basket2 = ({ callGetBasket, basket, callDeleteBasket, authFirebase, callDe
 //   }
 // , [basket]); // Ejecuta cada vez que `basket` cambia
 
-useEffect(() => { 
-  const mainTask = async () => {
-    await getNewBasket(); // Llama a la función para obtener el carrito
-  // const grouped = groupedBasket(basket); 
-  setNewBasket(basket);
-  console.log("this is new basket", newBasket) }
-  console.log("this is basket", basket)
-  mainTask(); // Llama a la función principal
-}, [basket]);
+// useEffect(() => { 
+//   const mainTask = async () => {
+//     await getNewBasket();  Llama a la función para obtener el carrito
+//    const grouped = groupedBasket(basket); 
+//   setNewBasket(basket);
+//   console.log("this is new basket", newBasket) }
+//   console.log("this is basket", basket)
+//   mainTask();  Llama a la función principal
+// }, [basket]);
 
  
 
@@ -65,6 +65,8 @@ useEffect(() => {
     }
 
     setUserProducts(userCart?.products || []);
+    console.log("this is user products NEW", userProducts);
+    console.log("this is basket NEW", basket);
   }, [basket, authFirebase]);
   return (
     <div className="fixed z-10 top-44 right-10">
@@ -87,7 +89,7 @@ useEffect(() => {
         <h2 className="text-lg font-bold text-gray-800 mb-4">Carrito</h2>
         <hr></hr>
         <h3>el usuario es {authFirebase?.user?.uid || 'No user logged in'}</h3>
-        {basket.length === 0 ? (
+        {userProducts.length === 0 ? (
           <p className="text-gray-600">El carrito está vacío.</p>
         ) : (
           userProducts.map(
