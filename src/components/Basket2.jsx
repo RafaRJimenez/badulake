@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { IoIosClose } from "react-icons/io";
 import { groupedBasket } from './services/BasketService';
 import { FiMinusCircle } from "react-icons/fi";
@@ -10,16 +10,45 @@ const Basket2 = ({ callGetBasket, basket, callDeleteBasket, authFirebase, callDe
   const [isOpen, setIsOpen] = useState(false); 
   const [newBasket, setNewBasket] = useState([]); // Estado para almacenar el nuevo carrito
    const [userProducts, setUserProducts] = useState([]);
+
+   const prevBasketLength = useRef();
+
+     const [isFirstLoad, setIsFirstLoad] = useState(true);
  
     const getNewBasket = async () => {
-    
     setIsOpen(true); // Abre el desplegable cuando se recibe un nuevo producto
-    // setTimeout(() => setIsOpen(false), 3000); // Cierra automáticamente después de 3 segundos
+     setTimeout(() => setIsOpen(false), 3000); // Cierra automáticamente después de 3 segundos
   };
 
   const closeBasket = () => {
     setIsOpen(false); // Cierra el desplegable
   }
+
+const prevTotalQuantity = useRef(null);
+
+useEffect(() => {
+  // Calcula el total de productos del usuario actual
+  let userCart;
+  if (authFirebase?.user?.uid) {
+    userCart = basket.find(cart => cart.id === authFirebase.user.uid);
+  } else {
+    userCart = basket.find(cart => cart.id === "guest");
+  }
+  const totalQuantity = (userCart?.products || []).reduce((acc, item) => acc + (item.quantity || 1), 0);
+
+  // Si es la primera carga, solo inicializa el ref
+  if (prevTotalQuantity.current === null) {
+    prevTotalQuantity.current = totalQuantity;
+    return;
+  }
+
+  // Si el total de productos aumenta, abre el carrito
+  if (totalQuantity > prevTotalQuantity.current) {
+    setIsOpen(true);
+    setTimeout(() => setIsOpen(false), 3000);
+  }
+  prevTotalQuantity.current = totalQuantity;
+}, [basket, authFirebase]);
 
   // const callDeleteWholeProduct = async (item) => {
   //   console.log('Antes de eliminar:', basket);
@@ -51,7 +80,15 @@ const Basket2 = ({ callGetBasket, basket, callDeleteBasket, authFirebase, callDe
 //   mainTask();  Llama a la función principal
 // }, [basket]);
 
- 
+  //  useEffect(() => {
+  //   if (prevBasketLength.current !== undefined && basket.length > prevBasketLength.current) {
+  //     setIsOpen(true);
+  //     setTimeout(() => setIsOpen(false), 3000);
+  //   }
+  //   prevBasketLength.current = basket.length;
+  // }, [basket]);
+
+
 
   useEffect(() => {
     let userCart;
@@ -67,6 +104,7 @@ const Basket2 = ({ callGetBasket, basket, callDeleteBasket, authFirebase, callDe
     setUserProducts(userCart?.products || []);
     console.log("this is user products NEW", userProducts);
     console.log("this is basket NEW", basket);
+
   }, [basket, authFirebase]);
   return (
     <div className="fixed z-10 top-44 right-10">
@@ -102,8 +140,13 @@ const Basket2 = ({ callGetBasket, basket, callDeleteBasket, authFirebase, callDe
               <h2 className="text-sm font-bold text-gray-800 relative text-left">{item.name}</h2>
               <p className="text-gray-600 text-left">${item.price}</p>
               <h4 className="text-sm font-semibold text-gray-800 relative text-left cursor-pointer">
-              <div className="flex items-center">Quantity: <h3 className='bold p-1' onClick={() => callDeleteBasket(item.id)}><FiMinusCircle />
-</h3> {item.quantity} <h3 className='bold p-1' onClick={() => callAddBasket({ name: item.name, price: item.price, image: item.image})}><FiPlusCircle />
+              <div className="flex items-center">Quantity: <h3 className='bold p-1' onClick={() => callDeleteBasket(
+{ user: authFirebase?.user?.uid || "guest", productId: item.id 
+}
+                )}><FiMinusCircle />
+</h3> {item.quantity} <h3 className='bold p-1' onClick={() => callAddBasket({ 
+user: authFirebase?.user?.uid || "guest", name: item.name, price: item.price, image: item.image, id: item.id
+  })}><FiPlusCircle />
 </h3></div>
               </h4>
               <h4 className="text-sm font-semibold text-red-500 relative text-left cursor-pointer" onClick={() => callDeleteWholeProduct(item.ids)}>Eliminar producto</h4>

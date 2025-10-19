@@ -39,8 +39,25 @@ export const basketReducer = (state = initialState, action) => {
         case DELETE_BASKET:
             return { ...state, loading: true, error: null };
         case DELETE_BASKET_SUCCESS:
-            const filteredBasket = state.basket.filter(item => item.id !== action.payload);
-            return { ...state, loading: false, basket: filteredBasket };
+           {
+            // payload: { id: userId, productId }
+            const { id, productId } = action.payload;
+            const updatedBasket = state.basket.map(cart => {
+                if (cart.id !== id) return cart;
+                // Decrementa cantidad o elimina producto si llega a 0
+                const updatedProducts = (cart.products || []).reduce((acc, prod) => {
+                    if (String(prod.id) !== String(productId)) {
+                        acc.push(prod);
+                    } else if ((prod.quantity || 1) > 1) {
+                        acc.push({ ...prod, quantity: (prod.quantity || 1) - 1 });
+                    }
+                    // Si quantity era 1, no lo añade (lo elimina)
+                    return acc;
+                }, []);
+                return { ...cart, products: updatedProducts };
+            }).filter(cart => !(cart.id === id && cart.products.length === 0)); // elimina carrito si queda vacío
+            return { ...state, loading: false, basket: updatedBasket };
+        }
         case DELETE_BASKET_FAILURE:
             return { ...state, loading: false, error: action.payload };
         case DELETE_FULL_BASKET:

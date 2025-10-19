@@ -79,18 +79,60 @@ function* editBasketSaga(action) {
     }
 }   
 
+// ...existing code...
 function* deleteBasketSaga(action) {
     try {
-        const id  = action.payload;
-        const docRef = doc(db, 'basket', id);
-        yield call(deleteDoc, docRef);
-        yield put({ type: DELETE_BASKET_SUCCESS, payload: id });
-        // toast.success('Producto eliminado del carrito con éxito');
+        const { user, productId } = action.payload;
+        const userId = user || "guest";
+        const cartRef = doc(db, 'basket', userId);
+
+        // Obtener el carrito actual
+        const cartSnap = yield call(getDoc, cartRef);
+        if (!cartSnap.exists()) {
+            // Nada que hacer si no existe carrito
+            yield put({ type: DELETE_BASKET_FAILURE, payload: 'Carrito no encontrado' });
+            return;
+        }
+
+        let products = cartSnap.data().products || [];
+
+        // Buscar el producto por id (coincide string/number)
+        const existing = products.find(p => String(p.id) === String(productId));
+        if (!existing) {
+            yield put({ type: DELETE_BASKET_FAILURE, payload: 'Producto no encontrado en el carrito' });
+            return;
+        }
+
+        // Decrementar cantidad o eliminar producto si llega a 0
+        if ((existing.quantity || 1) > 1) {
+            products = products.map(p =>
+                String(p.id) === String(productId) ? { ...p, quantity: (p.quantity || 1) - 1 } : p
+            );
+            // Actualizar el documento con el array modificado
+            yield call(setDoc, cartRef, { products }, { merge: true });
+            yield put({ type: DELETE_BASKET_SUCCESS, payload: { id: userId, products } });
+            toast.success('Cantidad reducida en 1');
+        } else {
+            // Eliminar el producto del array
+            products = products.filter(p => String(p.id) !== String(productId));
+            if (products.length === 0) {
+                // Si ya no quedan productos, borrar el documento
+                yield call(deleteDoc, cartRef);
+                yield put({ type: DELETE_BASKET_SUCCESS, payload: { id: userId, products: [] } });
+                toast.success('Producto eliminado y carrito vacío');
+            } else {
+                // Actualizar el documento con el array restante
+                yield call(setDoc, cartRef, { products }, { merge: true });
+                yield put({ type: DELETE_BASKET_SUCCESS, payload: { id: userId, products } });
+                toast.success('Producto eliminado del carrito');
+            }
+        }
     } catch (error) {
         yield put({ type: DELETE_BASKET_FAILURE, payload: error.message });
         toast.error('Error al eliminar producto del carrito');
     }
-}   
+}
+// ...existing code...
 
 
 function* deleteFullBasketSaga() {
