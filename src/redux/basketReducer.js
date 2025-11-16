@@ -40,23 +40,35 @@ export const basketReducer = (state = initialState, action) => {
             return { ...state, loading: true, error: null };
         case DELETE_BASKET_SUCCESS:
            {
-            // payload: { id: userId, productId }
-            const { id, productId } = action.payload;
-            const updatedBasket = state.basket.map(cart => {
-                if (cart.id !== id) return cart;
-                // Decrementa cantidad o elimina producto si llega a 0
-                const updatedProducts = (cart.products || []).reduce((acc, prod) => {
-                    if (String(prod.id) !== String(productId)) {
-                        acc.push(prod);
-                    } else if ((prod.quantity || 1) > 1) {
-                        acc.push({ ...prod, quantity: (prod.quantity || 1) - 1 });
-                    }
-                    // Si quantity era 1, no lo añade (lo elimina)
-                    return acc;
-                }, []);
-                return { ...cart, products: updatedProducts };
-            }).filter(cart => !(cart.id === id && cart.products.length === 0)); // elimina carrito si queda vacío
-            return { ...state, loading: false, basket: updatedBasket };
+            // // payload: { id: userId, productId }
+            // const { id, productId } = action.payload;
+            // const updatedBasket = state.basket.map(cart => {
+            //     if (cart.id !== id) return cart;
+            //     // Decrementa cantidad o elimina producto si llega a 0
+            //     const updatedProducts = (cart.products || []).reduce((acc, prod) => {
+            //         if (String(prod.id) !== String(productId)) {
+            //             acc.push(prod);
+            //         } else if ((prod.quantity || 1) > 1) {
+            //             acc.push({ ...prod, quantity: (prod.quantity || 1) - 1 });
+            //         }
+            //         // Si quantity era 1, no lo añade (lo elimina)
+            //         return acc;
+            //     }, []);
+            //     return { ...cart, products: updatedProducts };
+            // }).filter(cart => !(cart.id === id && cart.products.length === 0)); // elimina carrito si queda vacío
+            // return { ...state, loading: false, basket: updatedBasket };
+                // payload: { id, products }
+    const { id, products } = action.payload;
+    // Si el carrito queda vacío, elimínalo del array
+    if (!products || products.length === 0) {
+        return { ...state, loading: false, basket: state.basket.filter(cart => cart.id !== id) };
+    }
+    // Si quedan productos, actualiza el carrito correspondiente
+    const exists = state.basket.some(cart => cart.id === id);
+    const updatedBasket = exists
+        ? state.basket.map(cart => cart.id === id ? { id, products } : cart)
+        : [...state.basket, { id, products }];
+    return { ...state, loading: false, basket: updatedBasket };
         }
         case DELETE_BASKET_FAILURE:
             return { ...state, loading: false, error: action.payload };
