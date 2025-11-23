@@ -149,48 +149,30 @@ function* deleteFullBasketSaga() {
 }
 
 function* deleteWholeProductSaga(action) {
-    try {
-      const ids = action.payload;
-      
-      // Validar que ids es un array y no está vacío
-      if (!Array.isArray(ids) || ids.length === 0) {
-        throw new Error("Se esperaba un array de IDs no vacío");
-      }
-  
-      // Validar que todos los elementos del array son strings válidos
-      if (!ids.every(id => typeof id === "string" && id)) {
-        throw new Error("Todos los IDs deben ser strings válidos");
-      }
-  
-      // Obtener todos los documentos de la colección 'basket'
-      const querySnapshot = yield call(getDocs, collection(db, 'basket'));
-  
-      // Filtrar documentos cuyos IDs estén en el array de ids
-      const docsToDelete = querySnapshot.docs.filter(doc => ids.includes(doc.id));
-  
-      // Si no se encuentran documentos para eliminar
-      if (docsToDelete.length === 0) {
-        throw new Error("Ningún producto encontrado en el carrito para los IDs proporcionados");
-      }
-  
-      // Crear promesas de eliminación para los documentos filtrados
-      const deletePromises = docsToDelete.map(doc => call(deleteDoc, doc.ref));
-  
-      // Ejecutar todas las eliminaciones en paralelo
-      yield all(deletePromises);
-  
-      // Despachar acción de éxito
-      yield put({ type: DELETE_WHOLE_PRODUCT_SUCCESS, payload: ids });
-  
-      // Mostrar notificación de éxito
-      toast.success(`${docsToDelete.length} producto(s) eliminado(s) del carrito con éxito`);
-    } catch (error) {
-      // Despachar acción de fallo con el mensaje de error
-      yield put({ type: DELETE_WHOLE_PRODUCT_FAILURE, payload: error.message });
-  
-      // Mostrar notificación de error
-      toast.error(`Error al eliminar productos: ${error.message}`);
+     try {
+    const { user, productId } = action.payload;
+    const cartRef = doc(db, 'basket', user);
+    const cartSnap = yield call(getDoc, cartRef);
+
+    if (!cartSnap.exists()) {
+      throw new Error("Carrito no encontrado para este usuario");
     }
+
+    let products = cartSnap.data().products || [];
+    products = products.filter(p => String(p.id) !== String(productId));
+
+    if (products.length === 0) {
+      yield call(deleteDoc, cartRef);
+    } else {
+      yield call(setDoc, cartRef, { products }, { merge: true });
+    }
+
+    yield put({ type: DELETE_WHOLE_PRODUCT_SUCCESS, payload: { id: user, products } });
+    toast.success('Producto eliminado del carrito');
+  } catch (error) {
+    yield put({ type: DELETE_WHOLE_PRODUCT_FAILURE, payload: error.message });
+    toast.error(`Error al eliminar producto: ${error.message}`);
+  }
   }
 
 export function* watchBasketSagas() {

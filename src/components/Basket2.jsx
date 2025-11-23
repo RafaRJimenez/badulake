@@ -149,7 +149,11 @@ user: authFirebase?.user?.uid || "guest", name: item.name, price: item.price, im
   })}><FiPlusCircle />
 </h3></div>
               </h4>
-              <h4 className="text-sm font-semibold text-red-500 relative text-left cursor-pointer" onClick={() => callDeleteWholeProduct(item.ids)}>Eliminar producto</h4>
+              <h4 className="text-sm font-semibold text-red-500 relative text-left cursor-pointer" onClick={() => callDeleteWholeProduct(
+                {productId:item.id,
+                  user: authFirebase?.user?.uid || "guest"
+                }
+                )}>Eliminar producto</h4>
             </div>
               <img src={item.image} alt={item.name} className="w-16 h-16 object-cover mt-2" />
               </div>
